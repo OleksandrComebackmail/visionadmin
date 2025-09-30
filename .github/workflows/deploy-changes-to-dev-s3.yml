@@ -3,7 +3,7 @@ name: Deploy changes to dev s3
 on:
   push:
     branches:
-     - main 
+     - master 
   workflow_dispatch:    
   workflow_call:
     secrets:
