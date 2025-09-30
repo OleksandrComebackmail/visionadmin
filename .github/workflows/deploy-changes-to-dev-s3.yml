@@ -3,18 +3,18 @@ name: Deploy changes to dev s3
 on:
   push:
     branches:
-     - master 
-  workflow_dispatch:    
+      - master
+  workflow_dispatch:
   workflow_call:
     secrets:
-        AWS_ACCESS_KEY_ID:
-          required: true
-        AWS_SECRET_ACCESS_KEY:
-          required: true
-        AWS_REGION: 
-          required: true
-        ENV: 
-          required: true
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+      AWS_REGION:
+        required: true
+      ENV:
+        required: true
 env:
   ENVIRONMENT: prod
 jobs:
@@ -55,7 +55,7 @@ jobs:
             echo "Error: Neither build nor dist directory found"
             exit 1
           fi
-  
+
       - name: Upload to S3
         uses: jakejarvis/s3-sync-action@master
         with:
