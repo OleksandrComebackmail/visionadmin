@@ -1,12 +1,28 @@
-import { Create, SimpleForm, TextInput, BooleanInput } from "react-admin";
+import {
+  BooleanInput,
+  Create,
+  SimpleForm,
+  TextInput,
+  useRedirect,
+} from "react-admin";
+import { ImageUploadField } from "./ImageUploadField";
 
-export const CategoryCreate = () => (
-  <Create>
-    <SimpleForm>
-      <TextInput source="name" label="Name" required />
-      <TextInput source="description" label="Description" multiline />
-      <TextInput source="imageUrl" label="Image URL" />
-      <BooleanInput source="isDraft" label="Draft" />
-    </SimpleForm>
-  </Create>
-);
+export const CategoryCreate = () => {
+  const redirect = useRedirect();
+
+  const handleSuccess = () => {
+    redirect("list", "categories");
+  };
+
+  return (
+    <Create mutationOptions={{ onSuccess: handleSuccess }}>
+      <SimpleForm>
+        <TextInput source="name" label="Name" required />
+        <TextInput source="description" label="Description" multiline />
+        <TextInput source="imageUrl" label="Image URL" fullWidth />
+        <ImageUploadField source="imageUrl" label="Upload Category Image" />
+        <BooleanInput source="isDraft" label="Draft" />
+      </SimpleForm>
+    </Create>
+  );
+};

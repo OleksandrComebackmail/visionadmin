@@ -6,6 +6,7 @@ import {
   TextInput,
   useRecordContext,
 } from "react-admin";
+import { ImageUploadField } from "./ImageUploadField";
 
 interface Category {
   id: string;
@@ -25,7 +26,8 @@ export const CategoryEdit = () => (
     <SimpleForm>
       <TextInput source="name" label="Name" validate={[required()]} />
       <TextInput source="description" label="Description" multiline />
-      <TextInput source="imageUrl" label="Image URL" />
+      <TextInput source="imageUrl" label="Image URL" fullWidth />
+      <ImageUploadField source="imageUrl" label="Upload Category Image" />
       <BooleanInput source="isDraft" label="Draft" />
     </SimpleForm>
   </Edit>

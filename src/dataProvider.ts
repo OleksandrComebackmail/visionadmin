@@ -27,7 +27,6 @@ interface HttpOptions {
   cache?: RequestCache;
 }
 
-// Define types for our data
 interface BaseItem {
   id?: string;
   _id?: string;
