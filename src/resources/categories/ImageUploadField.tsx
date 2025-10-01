@@ -132,12 +132,6 @@ export const ImageUploadField = (props: ImageUploadFieldProps) => {
 
         {imageUrl && (
           <Box sx={{ mt: 2, maxWidth: "300px" }}>
-            <Typography
-              variant="caption"
-              sx={{ display: "block", mb: 1, wordBreak: "break-all" }}
-            >
-              Image URL: {imageUrl}
-            </Typography>
             <img
               src={imageUrl}
               alt="Category Image"
