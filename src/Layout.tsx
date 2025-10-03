@@ -52,7 +52,15 @@ const CustomSidebar = (props: SidebarProps) => (
 );
 
 export const Layout = ({ children }: { children: ReactNode }) => (
-  <RALayout appBar={GreenAppBar} sidebar={CustomSidebar}>
+  <RALayout
+    appBar={GreenAppBar}
+    sidebar={CustomSidebar}
+    sx={{
+      "& .RaLayout-content": {
+        backgroundColor: "#C2D5DA",
+      },
+    }}
+  >
     {children}
     <CheckForApplicationUpdate />
   </RALayout>
