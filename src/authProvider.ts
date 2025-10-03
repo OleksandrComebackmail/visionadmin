@@ -60,10 +60,17 @@ async function refreshWithRefreshToken(): Promise<void> {
   if (!res.ok) throw new Error(await res.text().catch(() => res.statusText));
   const data = await res.json();
 
-  if (!data.access_token)
+  if (!data.access_token) {
     throw new Error("No access_token in refresh response");
+  }
+
   localStorage.setItem(ACCESS_KEY, data.access_token);
-  if (data.refresh_token) localStorage.setItem(REFRESH_KEY, data.refresh_token);
+
+  if (data.refresh_token) {
+    localStorage.setItem(REFRESH_KEY, data.refresh_token);
+  }
+
+  console.log("Tokens refreshed successfully");
 }
 
 export const authProvider: AuthProvider = {
