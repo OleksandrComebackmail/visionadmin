@@ -1,6 +1,12 @@
 import type { ReactNode } from "react";
-import { Layout as RALayout, CheckForApplicationUpdate, AppBar, AppBarProps, Sidebar, SidebarProps } from "react-admin";
-import { Box } from "@mui/material";
+import {
+  Layout as RALayout,
+  CheckForApplicationUpdate,
+  AppBar,
+  AppBarProps,
+  Sidebar,
+  SidebarProps,
+} from "react-admin";
 
 const GreenAppBar = (props: AppBarProps) => (
   <AppBar
@@ -17,30 +23,30 @@ const CustomSidebar = (props: SidebarProps) => (
   <Sidebar
     {...props}
     sx={{
-      '&.RaSidebar-root': {
+      "&.RaSidebar-root": {
         backgroundColor: "rgba(27, 39, 42, 0.9)",
         boxShadow: "2px 0px 10px rgba(0, 0, 0, 0.2)",
       },
-      '& .MuiDrawer-paper': {
+      "& .MuiDrawer-paper": {
         backgroundColor: "rgba(27, 39, 42, 0.9)",
         boxShadow: "2px 0px 10px rgba(0, 0, 0, 0.2)",
         color: "white",
-        '& .MuiListItemIcon-root': {
+        "& .MuiListItemIcon-root": {
           color: "white",
         },
-        '& .MuiTypography-root': {
+        "& .MuiTypography-root": {
           color: "white",
         },
-        '& a': {
+        "& a": {
           color: "white",
         },
-        '& svg': {
+        "& svg": {
           color: "white",
         },
       },
-      '& .MuiDrawer-root': {
+      "& .MuiDrawer-root": {
         backgroundColor: "rgba(27, 39, 42, 0.9)",
-      }
+      },
     }}
   />
 );

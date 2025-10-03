@@ -7,17 +7,20 @@ import {
   DeleteButton,
   ShowButton,
   EditButton,
-  ImageField
+  ImageField,
 } from "react-admin";
 
 export const CategoryList = () => (
   <List>
-    <Datagrid rowClick="edit" sx={{
-      '& .column-isDraft': {
-        minWidth: '120px',
-        width: '120px'
-      }
-    }}>
+    <Datagrid
+      rowClick="edit"
+      sx={{
+        "& .column-isDraft": {
+          minWidth: "120px",
+          width: "120px",
+        },
+      }}
+    >
       <RA_TextField source="id" />
       <RA_TextField source="name" />
       <RA_TextField source="description" />
@@ -25,10 +28,10 @@ export const CategoryList = () => (
       <BooleanField
         source="isDraft"
         sx={{
-          '& .MuiTableCell-root': {
-            minWidth: '120px',
-            width: '120px'
-          }
+          "& .MuiTableCell-root": {
+            minWidth: "120px",
+            width: "120px",
+          },
         }}
       />
       <DateField source="createdAt" showTime />
