@@ -19,7 +19,6 @@ export const CategoryList = () => {
     <List
       sx={{
         padding: "16px",
-        backgroundColor: isDarkMode ? "#1A2F2E" : "#E8F5F2",
         borderRadius: "8px",
         "& .RaList-main": {
           boxShadow: isDarkMode
@@ -27,6 +26,7 @@ export const CategoryList = () => {
             : "0 2px 10px rgba(0, 0, 0, 0.08)",
           borderRadius: "8px",
           overflow: "hidden",
+          backgroundColor: isDarkMode ? "#263538" : "#E8F5F2",
         },
       }}
     >
@@ -38,35 +38,36 @@ export const CategoryList = () => {
             width: "120px",
           },
           "& .RaDatagrid-headerCell": {
-            backgroundColor: isDarkMode ? "#0D6159" : "#3D9B8F",
+            backgroundColor: isDarkMode ? "#214849" : "#9BB8B5",
             color: "white",
-            fontWeight: "bold",
+            fontWeight: "500",
             fontSize: "0.95rem",
             padding: "16px 12px",
             borderBottom: "none",
           },
           "& .MuiTableBody-root.datagrid-body.RaDatagrid-tbody": {
-            backgroundColor: isDarkMode ? "#263E3C" : "white",
+            backgroundColor: isDarkMode ? "#263B3E" : "white",
           },
           "& .RaDatagrid-tbody tr:nth-of-type(odd)": {
-            backgroundColor: isDarkMode ? "#1F3331" : "#F0F9F8",
+            backgroundColor: isDarkMode ? "#1F3033" : "#F0F9F8",
           },
           "& .MuiTableCell-root": {
             borderBottom: isDarkMode
               ? "1px solid #1A2F2E"
               : "1px solid #D7EBE9",
-            color: isDarkMode ? "#8FD0C8" : "#2A5954",
+            color: isDarkMode ? "#ffffff" : "#0a0a0a",
             padding: "12px",
           },
           "& .RaDatagrid-tbody tr:hover": {
             backgroundColor: isDarkMode ? "#315754" : "#D7EBE9",
             transition: "background-color 0.2s ease",
           },
-          "& .RaDatagrid-tbody .MuiButton-root": isDarkMode
-            ? {
-                color: "#8FD0C8",
-              }
-            : {},
+          "& .RaDatagrid-tbody .RaShowButton-root, & .RaDatagrid-tbody .RaEditButton-root, & .RaDatagrid-tbody .css-13vpg2j-MuiButtonBase-root-MuiButton-root-RaButton-root-RaShowButton-root.MuiButton-sizeSmall":
+            isDarkMode
+              ? {
+                  color: "#8FD0C8",
+                }
+              : {},
         }}
       >
         <RA_TextField source="id" />

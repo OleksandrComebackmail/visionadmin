@@ -7,13 +7,14 @@ import {
   Sidebar,
   SidebarProps,
 } from "react-admin";
+import { useTheme } from "@mui/material/styles";
 
 const GreenAppBar = (props: AppBarProps) => (
   <AppBar
     {...props}
     sx={{
       "& .RaAppBar-toolbar": {
-        backgroundColor: "rgba(27, 39, 42, 1)",
+        backgroundColor: "#1B272A",
       },
     }}
   />
@@ -24,11 +25,11 @@ const CustomSidebar = (props: SidebarProps) => (
     {...props}
     sx={{
       "&.RaSidebar-root": {
-        backgroundColor: "rgba(27, 39, 42, 0.9)",
+        backgroundColor: "#202E32",
         boxShadow: "2px 0px 10px rgba(0, 0, 0, 0.2)",
       },
       "& .MuiDrawer-paper": {
-        backgroundColor: "rgba(27, 39, 42, 0.9)",
+        backgroundColor: "#202E32",
         boxShadow: "2px 0px 10px rgba(0, 0, 0, 0.2)",
         color: "white",
         "& .MuiListItemIcon-root": {
@@ -51,17 +52,22 @@ const CustomSidebar = (props: SidebarProps) => (
   />
 );
 
-export const Layout = ({ children }: { children: ReactNode }) => (
-  <RALayout
-    appBar={GreenAppBar}
-    sidebar={CustomSidebar}
-    sx={{
-      "& .RaLayout-content": {
-        backgroundColor: "#C2D5DA",
-      },
-    }}
-  >
-    {children}
-    <CheckForApplicationUpdate />
-  </RALayout>
-);
+export const Layout = ({ children }: { children: ReactNode }) => {
+  const theme = useTheme();
+  const isDarkMode = theme.palette.mode === "dark";
+
+  return (
+    <RALayout
+      appBar={GreenAppBar}
+      sidebar={CustomSidebar}
+      sx={{
+        "& .RaLayout-content": {
+          backgroundColor: isDarkMode ? "#141E21" : "#F8F9FA",
+        },
+      }}
+    >
+      {children}
+      <CheckForApplicationUpdate />
+    </RALayout>
+  );
+};

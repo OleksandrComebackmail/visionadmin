@@ -22,7 +22,15 @@ const CategoryTitle = () => {
 };
 
 export const CategoryEdit = () => (
-  <Edit title={<CategoryTitle />}>
+  <Edit
+    title={<CategoryTitle />}
+    sx={{
+      "& .MuiToolbar-root.MuiToolbar-gutters.MuiToolbar-regular.RaToolbar-desktopToolbar.css-1wqk5af-MuiToolbar-root-RaToolbar-root":
+        {
+          backgroundColor: "#E8F5F2",
+        },
+    }}
+  >
     <SimpleForm>
       <TextInput source="name" label="Name" validate={[required()]} />
       <TextInput source="description" label="Description" multiline />

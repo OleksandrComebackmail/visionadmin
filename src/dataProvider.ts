@@ -40,18 +40,56 @@ interface CategoryData extends RaRecord {
   [key: string]: unknown;
 }
 
-const httpClient = (url: string, options: HttpOptions = {}) => {
+const refreshToken = async () => {
+  const refresh = localStorage.getItem("refresh_token");
+  if (!refresh) throw new Error("No refresh token");
+  const res = await fetch(
+    "https://api.vision.softwaredoes.com/api/staff/auth/refresh",
+    {
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${refresh}`,
+      }),
+      body: JSON.stringify({ refreshToken: refresh }),
+    },
+  );
+  if (!res.ok) throw new Error(await res.text().catch(() => res.statusText));
+  const data = await res.json();
+  if (!data.access_token)
+    throw new Error("No access_token in refresh response");
+  localStorage.setItem("access_token", data.access_token);
+  if (data.refresh_token)
+    localStorage.setItem("refresh_token", data.refresh_token);
+  return data.access_token;
+};
+
+const httpClient = async (url: string, options: HttpOptions = {}) => {
   if (!options.headers) {
     options.headers = new Headers({ Accept: "application/json" });
   } else if (!(options.headers instanceof Headers)) {
     options.headers = new Headers(options.headers);
   }
-
-  const token = localStorage.getItem(ACCESS_KEY);
+  let token = localStorage.getItem(ACCESS_KEY);
   if (token) {
     (options.headers as Headers).set("Authorization", `Bearer ${token}`);
   }
-  return fetchUtils.fetchJson(url, options);
+  try {
+    return await fetchUtils.fetchJson(url, options);
+  } catch (error: any) {
+    if (error.status === 401) {
+      try {
+        token = await refreshToken();
+        (options.headers as Headers).set("Authorization", `Bearer ${token}`);
+        return await fetchUtils.fetchJson(url, options);
+      } catch (refreshError) {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        throw error;
+      }
+    }
+    throw error;
+  }
 };
 
 const base = simpleRestProvider(API_URL, httpClient);

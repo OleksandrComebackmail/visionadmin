@@ -104,8 +104,14 @@ export const authProvider: AuthProvider = {
   async checkError(error: HttpError) {
     const status = error?.status ?? error?.response?.status;
     if (status === 401 || status === 403) {
-      localStorage.removeItem(ACCESS_KEY);
-      return Promise.reject();
+      try {
+        await refreshWithRefreshToken();
+        return Promise.resolve();
+      } catch {
+        localStorage.removeItem(ACCESS_KEY);
+        localStorage.removeItem(REFRESH_KEY);
+        return Promise.reject();
+      }
     }
     return Promise.resolve();
   },
