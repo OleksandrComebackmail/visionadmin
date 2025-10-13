@@ -11,6 +11,17 @@ import { UsersList } from "./resources/users/UsersList";
 import { UserShow } from "./resources/users/UserShow";
 
 import { dataProvider } from "./dataProvider";
+import { BoardQuoteList } from "./resources/boardQuotes/list.tsx";
+import { BoardQuoteCreate } from "./resources/boardQuotes/create.tsx";
+import { BoardQuoteShow } from "./resources/boardQuotes/show.tsx";
+import { BoardQuoteEdit } from "./resources/boardQuotes/edit.tsx";
+import { AuthorQuoteCreate } from "./resources/authorQuotes/create.tsx";
+import { AuthorQuoteEdit } from "./resources/authorQuotes/edit.tsx";
+import { AuthorQuoteList } from "./resources/authorQuotes/list.tsx";
+import { AuthorQuoteShow } from "./resources/authorQuotes/show.tsx";
+import { BoardServiceList } from "./resources/boardServices/list.tsx";
+import { BoardServiceCreate } from "./resources/boardServices/create.tsx";
+import { BoardServiceShow } from "./resources/boardServices/show.tsx";
 
 export const App = () => (
   <Admin
@@ -28,6 +39,26 @@ export const App = () => (
       create={CategoryCreate}
       show={CategoryShow}
       edit={CategoryEdit}
+    />
+    <Resource
+      name="board-quotes"
+      list={BoardQuoteList}
+      create={BoardQuoteCreate}
+      show={BoardQuoteShow}
+      edit={BoardQuoteEdit}
+    />
+    <Resource
+      name="author-quotes"
+      list={AuthorQuoteList}
+      create={AuthorQuoteCreate}
+      show={AuthorQuoteShow}
+      edit={AuthorQuoteEdit}
+    />
+    <Resource
+      name="board-services"
+      list={BoardServiceList}
+      create={BoardServiceCreate}
+      show={BoardServiceShow}
     />
   </Admin>
 );

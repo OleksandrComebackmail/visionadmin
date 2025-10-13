@@ -103,6 +103,36 @@ export const dataProvider: DataProvider = {
   ...base,
 
   getList: async (resource: string, params: GetListParams) => {
+    if (resource === "board-services") {
+      const includeArchived = params.filter?.includeArchived || false;
+      const url = `${API_URL}/board-services?includeArchived=${includeArchived}`;
+      const { json } = await httpClient(url);
+      const data = (Array.isArray(json) ? json : []).map(normalizeId);
+      return { data, total: data.length };
+    }
+    if (resource === "board-services") {
+      const includeArchived = params.meta?.includeArchived ? true : false;
+      const url = `${API_URL}/${resource}?includeArchived=${includeArchived}`;
+      const { json } = await httpClient(url);
+      const data = (Array.isArray(json) ? json : []).map(normalizeId);
+      return { data, total: data.length };
+    }
+    if (resource === "board-quotes") {
+      const url = `${API_URL}/board-quotes`;
+      const { json } = await httpClient(url);
+      const data = (Array.isArray(json) ? json : []).map(normalizeId);
+      return { data, total: data.length };
+    }
+    if (resource === "author-quotes") {
+      const { page, perPage } = params.pagination || { page: 1, perPage: 10 };
+      const url = `${API_URL}/author-quotes?limit=${perPage}&page=${page}`;
+      const { json } = await httpClient(url);
+
+      const data = (Array.isArray(json.data) ? json.data : []).map(normalizeId);
+      const total = json.total || data.length;
+
+      return { data, total };
+    }
     if (resource === "categories") {
       const url = `${API_URL}/${resource}`;
       const { json } = await httpClient(url);
@@ -164,6 +194,22 @@ export const dataProvider: DataProvider = {
       });
       return { data: normalizeId(json) };
     }
+    if (resource === "board-quotes") {
+      const url = `${API_URL}/board-quotes/${params.id}`;
+      const { json } = await httpClient(url, {
+        method: "PATCH",
+        body: JSON.stringify(params.data),
+      });
+      return { data: normalizeId(json) };
+    }
+    if (resource === "author-quotes") {
+      const url = `${API_URL}/author-quotes/${params.id}`;
+      const { json } = await httpClient(url, {
+        method: "PATCH",
+        body: JSON.stringify(params.data),
+      });
+      return { data: normalizeId(json) };
+    }
     return base.update(resource, params);
   },
 
@@ -176,6 +222,30 @@ export const dataProvider: DataProvider = {
       await httpClient(url, { method: "DELETE" });
       return { data: { id: params.id } };
     }
+    if (resource === "board-quotes") {
+      const url = `${API_URL}/${resource}/${params.id}`;
+      await httpClient(url, { method: "DELETE" });
+      return { data: { id: params.id } };
+    }
+    if (resource === "author-quotes") {
+      const url = `${API_URL}/${resource}/${params.id}`;
+      await httpClient(url, { method: "DELETE" });
+      return { data: { id: params.id } };
+    }
     return base.delete(resource, params);
+  },
+
+  unarchiveBoardService: async (id: string): Promise<any> => {
+    const url = `${API_URL}/board-services/${id}/unarchive`;
+    const { json } = await httpClient(url, {
+      method: "PATCH",
+    });
+    return { data: normalizeId(json) };
+  },
+
+  forceDeleteBoardService: async (id: string): Promise<any> => {
+    const url = `${API_URL}/board-services/${id}/force`;
+    const { json } = await httpClient(url, { method: "DELETE" });
+    return { data: normalizeId(json) };
   },
 };
