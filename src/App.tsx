@@ -46,6 +46,7 @@ export const App = () => (
       create={BoardQuoteCreate}
       show={BoardQuoteShow}
       edit={BoardQuoteEdit}
+      options={{ label: "Vision Statements" }}
     />
     <Resource
       name="author-quotes"
@@ -53,12 +54,14 @@ export const App = () => (
       create={AuthorQuoteCreate}
       show={AuthorQuoteShow}
       edit={AuthorQuoteEdit}
+      options={{ label: "Author Quotes" }}
     />
     <Resource
       name="board-services"
       list={BoardServiceList}
       create={BoardServiceCreate}
       show={BoardServiceShow}
+      options={{ label: "Board Services" }}
     />
   </Admin>
 );

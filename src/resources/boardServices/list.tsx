@@ -17,6 +17,10 @@ const BoardServiceFilters = [
     source="includeArchived"
     label="Show Archived Services"
     alwaysOn
+    sx={{
+      "& .MuiFormControlLabel-root": { ml: "0px" },
+      "&.MuiFormControlLabel-root": { ml: "0px" },
+    }}
   />,
 ];
 
@@ -39,6 +43,11 @@ export const BoardServiceList = () => {
           overflow: "hidden",
           backgroundColor: isDarkMode ? "#263538" : "#E8F5F2",
         },
+
+        "& .RaFilterForm-root .MuiFormControlLabel-root.MuiFormControlLabel-labelPlacementEnd":
+          {
+            marginLeft: "0px",
+          },
       }}
     >
       <Datagrid
