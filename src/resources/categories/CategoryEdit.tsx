@@ -33,7 +33,12 @@ export const CategoryEdit = () => (
   >
     <SimpleForm>
       <TextInput source="name" label="Name" validate={[required()]} />
-      <TextInput source="description" label="Description" multiline />
+      <TextInput
+        source="description"
+        label="Description"
+        multiline
+        validate={[required()]}
+      />
       <TextInput source="imageUrl" label="Image" fullWidth />
       <ImageUploadField source="imageUrl" label="Upload Category Image" />
       <BooleanInput source="isDraft" label="Draft" />
