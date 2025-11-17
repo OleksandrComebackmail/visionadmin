@@ -63,6 +63,8 @@ export const Layout = ({ children }: { children: ReactNode }) => {
       sx={{
         "& .RaLayout-content": {
           backgroundColor: isDarkMode ? "#141E21" : "#F8F9FA",
+          maxHeight: "100vh",
+          overflowY: "auto",
         },
       }}
     >

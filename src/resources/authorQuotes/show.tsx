@@ -12,7 +12,6 @@ export const AuthorQuoteShow = () => (
       <TextField source="id" />
       <TextField source="text" />
       <TextField source="author" />
-      <TextField source="title" />
       <ImageField source="imageUrl" />
       <DateField source="createdAt" showTime />
       <DateField source="updatedAt" showTime />

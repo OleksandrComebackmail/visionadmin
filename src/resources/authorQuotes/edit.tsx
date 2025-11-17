@@ -25,11 +25,6 @@ export const AuthorQuoteEdit = () => (
         fullWidth
         helperText="Edit the author's name"
       />
-      <TextInput
-        source="title"
-        fullWidth
-        helperText="Edit the author's title or description"
-      />
       <TextInput source="imageUrl" label="Image" fullWidth />
       <ImageUploadField source="imageUrl" label="Upload author's Image" />
     </SimpleForm>
