@@ -26,11 +26,19 @@ const CustomSidebar = (props: SidebarProps) => (
     sx={{
       "&.RaSidebar-root": {
         backgroundColor: "#202E32",
+        height: "100vh",
         boxShadow: "2px 0px 10px rgba(0, 0, 0, 0.2)",
+        "&.RaSidebar-fixed": {
+          backgroundColor: "#202E32",
+        },
+      },
+      "& .RaSidebar-paper": {
+        backgroundColor: "#202E32",
       },
       "& .MuiDrawer-paper": {
         backgroundColor: "#202E32",
         boxShadow: "2px 0px 10px rgba(0, 0, 0, 0.2)",
+        height: "100vh",
         color: "white",
         "& .MuiListItemIcon-root": {
           color: "white",

@@ -40,6 +40,20 @@ export const AuthorQuoteList = () => {
       <Datagrid
         rowClick="edit"
         sx={{
+          "& .column-id": {
+            maxWidth: "155px",
+            width: "80px",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          },
+          "& .column-author": {
+            minWidth: "180px",
+            width: "180px",
+          },
+          "& .column-imageUrl": {
+            minWidth: "200px",
+            width: "200px",
+          },
           "& .column-isDraft": {
             minWidth: "120px",
             width: "120px",

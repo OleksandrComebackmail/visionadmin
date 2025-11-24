@@ -129,7 +129,7 @@ export const dataProvider: DataProvider = {
       const { json } = await httpClient(url);
 
       const data = (Array.isArray(json.data) ? json.data : []).map(normalizeId);
-      const total = json.total || data.length;
+      const total = json.meta?.total || data.length;
 
       return { data, total };
     }
