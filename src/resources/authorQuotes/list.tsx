@@ -41,18 +41,18 @@ export const AuthorQuoteList = () => {
         rowClick="edit"
         sx={{
           "& .column-id": {
-            maxWidth: "155px",
-            width: "80px",
+            maxWidth: "120px",
+            width: "110px",
             overflow: "hidden",
             textOverflow: "ellipsis",
           },
           "& .column-author": {
-            minWidth: "180px",
-            width: "180px",
+            minWidth: "240px",
+            width: "240px",
           },
           "& .column-imageUrl": {
-            minWidth: "200px",
-            width: "200px",
+            minWidth: "260px",
+            width: "260px",
           },
           "& .column-isDraft": {
             minWidth: "120px",
@@ -97,7 +97,7 @@ export const AuthorQuoteList = () => {
         <ImageField
           source="imageUrl"
           label="Image"
-          sx={{ "& img": { maxWidth: "75%", height: "auto" } }}
+          sx={{ "& img": { maxWidth: "90%", height: "auto" } }}
         />
         <DateField source="createdAt" showTime />
         <DateField source="updatedAt" showTime />

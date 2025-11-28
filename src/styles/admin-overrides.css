@@ -1,0 +1,19 @@
+/* Sidebar background for RaSidebar-fixed and related classes */
+.RaSidebar-fixed,
+.RaSidebar-paper,
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-elevation0.MuiDrawer-paper.RaSidebar-paper.MuiDrawer-paperAnchorLeft.RaSidebar-paperAnchorLeft.MuiDrawer-paperAnchorDockedLeft.RaSidebar-paperAnchorDockedLeft.css-1lwhjos-MuiPaper-root-MuiDrawer-paper {
+  background-color: #202E32 !important;
+  color: #ffffff;
+}
+
+/* Also target the drawer paper more generically */
+.MuiDrawer-paper {
+  background-color: #202E32 !important;
+}
+
+/* Adjust sidebar link colors if necessary */
+.RaSidebar a,
+.RaSidebar .MuiListItemText-primary {
+  color: rgba(255,255,255,0.9) !important;
+}
+

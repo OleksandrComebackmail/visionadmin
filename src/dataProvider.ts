@@ -8,6 +8,8 @@ import {
   RaRecord,
   DeleteParams,
   DeleteResult,
+  CreateParams,
+  CreateResult,
 } from "react-admin";
 import simpleRestProvider from "ra-data-simple-rest";
 
@@ -76,19 +78,20 @@ const httpClient = async (url: string, options: HttpOptions = {}) => {
   }
   try {
     return await fetchUtils.fetchJson(url, options);
-  } catch (error: any) {
-    if (error.status === 401) {
+  } catch (error: unknown) {
+    const err = error as { status?: number };
+    if (err?.status === 401) {
       try {
         token = await refreshToken();
         (options.headers as Headers).set("Authorization", `Bearer ${token}`);
         return await fetchUtils.fetchJson(url, options);
-      } catch (refreshError) {
+      } catch {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
-        throw error;
+        throw err;
       }
     }
-    throw error;
+    throw err;
   }
 };
 
@@ -111,7 +114,7 @@ export const dataProvider: DataProvider = {
       return { data, total: data.length };
     }
     if (resource === "board-services") {
-      const includeArchived = params.meta?.includeArchived ? true : false;
+      const includeArchived = !!params.meta?.includeArchived;
       const url = `${API_URL}/${resource}?includeArchived=${includeArchived}`;
       const { json } = await httpClient(url);
       const data = (Array.isArray(json) ? json : []).map(normalizeId);
@@ -129,7 +132,9 @@ export const dataProvider: DataProvider = {
       const { json } = await httpClient(url);
 
       const data = (Array.isArray(json.data) ? json.data : []).map(normalizeId);
-      const total = json.meta?.total || data.length;
+      // Coerce total to number (API may return string). Fallback to data length
+      const totalRaw = json?.meta?.total ?? json?.total ?? data.length;
+      const total = Number(totalRaw) || data.length;
 
       return { data, total };
     }
@@ -150,6 +155,21 @@ export const dataProvider: DataProvider = {
       });
       const data = (Array.isArray(json.data) ? json.data : []).map(normalizeId);
       const total = json.meta?.total || data.length;
+      return { data, total };
+    }
+    if (resource === "team") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/about/team`;
+      const { json } = await httpClient(url);
+      const data = (Array.isArray(json) ? json : []).map(normalizeId);
+      return { data, total: data.length };
+    }
+    if (resource === "episodes") {
+      const { page, perPage } = params.pagination || { page: 1, perPage: 10 };
+      const url = `https://api.vision.softwaredoes.com/api/admin/episodes?limit=${perPage}&page=${page}`;
+      const { json } = await httpClient(url);
+      const data = (Array.isArray(json.data) ? json.data : []).map(normalizeId);
+      const totalRaw = json?.meta?.total ?? json?.total ?? data.length;
+      const total = Number(totalRaw) || data.length;
       return { data, total };
     }
     return base.getList(resource, params);
@@ -178,6 +198,16 @@ export const dataProvider: DataProvider = {
       const { json } = await httpClient(url);
       const userData = json.data ? normalizeId(json.data) : normalizeId(json);
       return { data: userData };
+    }
+    if (resource === "team") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/about/team/${params.id}`;
+      const { json } = await httpClient(url);
+      return { data: normalizeId(json) };
+    }
+    if (resource === "episodes") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/episodes/${params.id}`;
+      const { json } = await httpClient(url);
+      return { data: normalizeId(json) };
     }
     return base.getOne(resource, params);
   },
@@ -210,7 +240,38 @@ export const dataProvider: DataProvider = {
       });
       return { data: normalizeId(json) };
     }
+    if (resource === "team") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/about/team/${params.id}`;
+      const { json } = await httpClient(url, {
+        method: "PUT",
+        body: JSON.stringify(params.data),
+      });
+      return { data: normalizeId(json) };
+    }
+    if (resource === "episodes") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/episodes/${params.id}`;
+      const { json } = await httpClient(url, {
+        method: "PUT",
+        body: JSON.stringify(params.data),
+      });
+      return { data: normalizeId(json) };
+    }
     return base.update(resource, params);
+  },
+
+  create: async (
+    resource: string,
+    params: CreateParams,
+  ): Promise<CreateResult> => {
+    if (resource === "episodes") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/episodes`;
+      const { json } = await httpClient(url, {
+        method: "POST",
+        body: JSON.stringify(params.data),
+      });
+      return { data: normalizeId(json) };
+    }
+    return base.create(resource, params);
   },
 
   delete: async (
@@ -232,10 +293,15 @@ export const dataProvider: DataProvider = {
       await httpClient(url, { method: "DELETE" });
       return { data: { id: params.id } };
     }
+    if (resource === "episodes") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/episodes/${params.id}`;
+      await httpClient(url, { method: "DELETE" });
+      return { data: { id: params.id } };
+    }
     return base.delete(resource, params);
   },
 
-  unarchiveBoardService: async (id: string): Promise<any> => {
+  unarchiveBoardService: async (id: string): Promise<{ data: RaRecord }> => {
     const url = `${API_URL}/board-services/${id}/unarchive`;
     const { json } = await httpClient(url, {
       method: "PATCH",
@@ -243,7 +309,7 @@ export const dataProvider: DataProvider = {
     return { data: normalizeId(json) };
   },
 
-  forceDeleteBoardService: async (id: string): Promise<any> => {
+  forceDeleteBoardService: async (id: string): Promise<{ data: RaRecord }> => {
     const url = `${API_URL}/board-services/${id}/force`;
     const { json } = await httpClient(url, { method: "DELETE" });
     return { data: normalizeId(json) };
