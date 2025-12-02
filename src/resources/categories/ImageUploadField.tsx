@@ -1,32 +1,20 @@
 import ImageIcon from "@mui/icons-material/Image";
 import { Box, Typography } from "@mui/material";
 import { useRef, useState } from "react";
-import {
-  Button,
-  useInput,
-  useNotify,
-  useRecordContext,
-  useUpdate,
-} from "react-admin";
+import { Button, useInput, useNotify } from "react-admin";
 
 interface ImageUploadFieldProps {
   source: string;
   label: string;
+  allowVideo?: boolean; // ← NEW
 }
 
-const API_URL = "https://api.vision.softwaredoes.com/api/staff";
-
-interface CategoryFormRecord {
-  id?: string;
-  [key: string]: any;
-}
+const API_URL = "https://api.vision.softwaredoes.com/api/admin";
 
 export const ImageUploadField = (props: ImageUploadFieldProps) => {
-  const { source, label } = props;
-  const record = useRecordContext<CategoryFormRecord>();
+  const { source, label, allowVideo = false } = props; // ← NEW
   const notify = useNotify();
   const [uploading, setUploading] = useState(false);
-  const [update] = useUpdate();
 
   const { field } = useInput({ source });
 
@@ -51,7 +39,7 @@ export const ImageUploadField = (props: ImageUploadFieldProps) => {
     try {
       const token = localStorage.getItem("access_token");
 
-      const response = await fetch(`${API_URL}/categories/image`, {
+      const response = await fetch(`${API_URL}/pages/media`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -60,33 +48,29 @@ export const ImageUploadField = (props: ImageUploadFieldProps) => {
       });
 
       if (!response.ok) {
-        throw new Error("Image upload failed");
+        throw new Error("Upload failed");
       }
 
       const data = await response.json();
-      const newImageUrl = data.imageUrl || data.url || data.path || "";
 
-      field.onChange(newImageUrl);
+      // API returns {url, key, type}
+      const newUrl = data.url ?? "";
 
-      if (record && record.id) {
-        update("categories", {
-          id: record.id,
-          data: { [source]: newImageUrl },
-          previousData: record,
-        });
-      }
+      field.onChange(newUrl);
 
-      notify("Image uploaded successfully", { type: "success" });
+      notify("File uploaded successfully", { type: "success" });
     } catch (error) {
-      console.error("Error uploading image:", error);
+      console.error("Upload error:", error);
       notify(
-        `Error uploading image: ${error instanceof Error ? error.message : String(error)}`,
+        `Upload failed: ${error instanceof Error ? error.message : String(error)}`,
         { type: "error" },
       );
     } finally {
       setUploading(false);
     }
   };
+
+  const isVideo = (url?: string) => url?.match(/\.(mp4|mov|webm|avi|mkv)$/i);
 
   return (
     <Box sx={{ mb: 2 }}>
@@ -98,12 +82,11 @@ export const ImageUploadField = (props: ImageUploadFieldProps) => {
       >
         {label}
       </Typography>
-      <Typography
-        variant="caption"
-        color="textSecondary"
-        sx={{ display: "block", mb: 1 }}
-      >
-        Click the button below to select and upload an image
+
+      <Typography variant="caption" sx={{ display: "block", mb: 1 }}>
+        {allowVideo
+          ? "You can upload image or video"
+          : "Click below to upload an image"}
       </Typography>
 
       <Box sx={{ mt: 1, display: "flex", flexDirection: "column", gap: 1 }}>
@@ -111,32 +94,41 @@ export const ImageUploadField = (props: ImageUploadFieldProps) => {
           ref={fileInputRef}
           id="image-upload"
           type="file"
-          accept="image/*"
+          accept={allowVideo ? "image/*,video/*" : "image/*"} // ← NEW
           onChange={handleImageUpload}
           style={{ display: "none" }}
         />
+
         <Button
           variant="contained"
           color="primary"
           startIcon={<ImageIcon />}
           disabled={uploading}
           sx={{ width: "fit-content" }}
-          onClick={() => {
-            if (fileInputRef.current) {
-              fileInputRef.current.click();
-            }
-          }}
+          onClick={() => fileInputRef.current?.click()}
         >
-          {uploading ? "Uploading..." : "Upload Image"}
+          {uploading
+            ? "Uploading..."
+            : allowVideo
+              ? "Upload Image/Video"
+              : "Upload Image"}
         </Button>
 
         {imageUrl && (
           <Box sx={{ mt: 2, maxWidth: "300px" }}>
-            <img
-              src={imageUrl}
-              alt="Category Image"
-              style={{ width: "100%", borderRadius: "4px" }}
-            />
+            {isVideo(imageUrl) ? (
+              <video
+                src={imageUrl}
+                controls
+                style={{ width: "100%", borderRadius: "4px" }}
+              />
+            ) : (
+              <img
+                src={imageUrl}
+                alt="Uploaded file"
+                style={{ width: "100%", borderRadius: "4px" }}
+              />
+            )}
           </Box>
         )}
       </Box>

@@ -43,7 +43,7 @@ export const TeamShow = () => {
           "& .RaLabeled-label": {
             color: isDarkMode ? "#8FD0C8" : "#214849",
             fontWeight: "500",
-            fontSize: "0.9rem",
+            fontSize: "19px",
           },
           "& .MuiTypography-root": {
             color: isDarkMode ? "#ffffff" : "#0a0a0a",

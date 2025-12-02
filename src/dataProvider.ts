@@ -138,12 +138,12 @@ export const dataProvider: DataProvider = {
 
       return { data, total };
     }
-    if (resource === "categories") {
-      const url = `${API_URL}/${resource}`;
-      const { json } = await httpClient(url);
-      const data = (Array.isArray(json) ? json : []).map(normalizeId);
-      return { data, total: data.length };
-    }
+    // if (resource === "categories") {
+    //   const url = `${API_URL}/${resource}`;
+    //   const { json } = await httpClient(url);
+    //   const data = (Array.isArray(json) ? json : []).map(normalizeId);
+    //   return { data, total: data.length };
+    // }
     if (resource === "users") {
       const url = `${API_URL}/${resource}`;
       const { json } = await fetchUtils.fetchJson(url, {
@@ -172,6 +172,17 @@ export const dataProvider: DataProvider = {
       const total = Number(totalRaw) || data.length;
       return { data, total };
     }
+    if (resource === "about") {
+      // The backend exposes a single about page at /api/admin/about/page
+      const url = `https://api.vision.softwaredoes.com/api/admin/about/page`;
+      const { json } = await httpClient(url);
+      // Normalize to array for list responses
+      const item = json ?? {};
+      const data = Array.isArray(item)
+        ? item.map(normalizeId)
+        : [normalizeId(item)];
+      return { data, total: data.length };
+    }
     return base.getList(resource, params);
   },
 
@@ -188,11 +199,11 @@ export const dataProvider: DataProvider = {
   },
 
   getOne: async (resource: string, params: GetOneParams) => {
-    if (resource === "categories") {
-      const url = `${API_URL}/${resource}/${params.id}`;
-      const { json } = await httpClient(url);
-      return { data: normalizeId(json) };
-    }
+    // if (resource === "categories") {
+    //   const url = `${API_URL}/${resource}/${params.id}`;
+    //   const { json } = await httpClient(url);
+    //   return { data: normalizeId(json) };
+    // }
     if (resource === "users") {
       const url = `${API_URL}/${resource}/${params.id}`;
       const { json } = await httpClient(url);
@@ -209,6 +220,17 @@ export const dataProvider: DataProvider = {
       const { json } = await httpClient(url);
       return { data: normalizeId(json) };
     }
+    if (resource === "about") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/about/page`;
+      const { json } = await httpClient(url);
+
+      return {
+        data: {
+          ...json.content,
+          id: "about-page-id",
+        },
+      };
+    }
     return base.getOne(resource, params);
   },
 
@@ -216,14 +238,14 @@ export const dataProvider: DataProvider = {
     resource: string,
     params: UpdateParams<CategoryData>,
   ): Promise<UpdateResult> => {
-    if (resource === "categories") {
-      const url = `${API_URL}/${resource}/${params.id}`;
-      const { json } = await httpClient(url, {
-        method: "PUT",
-        body: JSON.stringify(params.data),
-      });
-      return { data: normalizeId(json) };
-    }
+    // if (resource === "categories") {
+    //   const url = `${API_URL}/${resource}/${params.id}`;
+    //   const { json } = await httpClient(url, {
+    //     method: "PUT",
+    //     body: JSON.stringify(params.data),
+    //   });
+    //   return { data: normalizeId(json) };
+    // }
     if (resource === "board-quotes") {
       const url = `${API_URL}/board-quotes/${params.id}`;
       const { json } = await httpClient(url, {
@@ -256,6 +278,15 @@ export const dataProvider: DataProvider = {
       });
       return { data: normalizeId(json) };
     }
+    if (resource === "about") {
+      // Update about page via PUT /api/admin/about/page
+      const url = `https://api.vision.softwaredoes.com/api/admin/about/page`;
+      const { json } = await httpClient(url, {
+        method: "PUT",
+        body: JSON.stringify(params.data),
+      });
+      return { data: normalizeId(json) };
+    }
     return base.update(resource, params);
   },
 
@@ -278,11 +309,11 @@ export const dataProvider: DataProvider = {
     resource: string,
     params: DeleteParams,
   ): Promise<DeleteResult> => {
-    if (resource === "categories") {
-      const url = `${API_URL}/${resource}/${params.id}`;
-      await httpClient(url, { method: "DELETE" });
-      return { data: { id: params.id } };
-    }
+    // if (resource === "categories") {
+    //   const url = `${API_URL}/${resource}/${params.id}`;
+    //   await httpClient(url, { method: "DELETE" });
+    //   return { data: { id: params.id } };
+    // }
     if (resource === "board-quotes") {
       const url = `${API_URL}/${resource}/${params.id}`;
       await httpClient(url, { method: "DELETE" });

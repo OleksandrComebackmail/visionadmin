@@ -1,14 +1,18 @@
-import { Admin, Resource } from "react-admin";
+import { Admin, CustomRoutes, Resource } from "react-admin";
+import { Route } from "react-router";
 import { Layout } from "./Layout";
 import { authProvider } from "./authProvider";
 import { LoginPage } from "./LoginPage";
 import { Dashboard } from "./Dashboard";
-import { CategoryList } from "./resources/categories/CategoryList";
-import { CategoryCreate } from "./resources/categories/CategoryCreate";
-import { CategoryShow } from "./resources/categories/CategoryShow";
-import { CategoryEdit } from "./resources/categories/CategoryEdit";
-import { UsersList } from "./resources/users/UsersList";
-import { UserShow } from "./resources/users/UserShow";
+import { UserList } from "./resources/users/list.tsx";
+import { UserShow } from "./resources/users/show.tsx";
+
+import { BehindTheScenesList } from "@/resources/BehindTheScenes";
+import { EpisodeShow } from "@/resources/BehindTheScenes/episodes/show";
+import { EpisodeEdit } from "@/resources/BehindTheScenes/episodes/edit";
+import { TeamList } from "@/resources/team/list.tsx";
+import { TeamShow } from "@/resources/team/show.tsx";
+import { TeamEdit } from "@/resources/team/edit.tsx";
 
 import { dataProvider } from "./dataProvider";
 import { BoardQuoteList } from "./resources/boardQuotes/list.tsx";
@@ -25,17 +29,9 @@ import { BoardServiceShow } from "./resources/boardServices/show.tsx";
 import "@/styles/_variables.scss";
 import "@/components/tiptap-overrides.css";
 import "@/styles/admin-overrides.css";
-
-// NEW IMPORTS
-import { TeamList } from "@/resources/team/TeamList";
-// import { TeamCreate } from "@/resources/team/TeamCreate";
-import { TeamShow } from "@/resources/team/TeamShow";
-import { TeamEdit } from "@/resources/team/TeamEdit";
-
-// BEHIND THE SCENES IMPORTS
-import { BehindTheScenesList } from "@/resources/BehindTheScenes";
-import { EpisodeShow } from "@/resources/BehindTheScenes/episodes/show";
-import { EpisodeEdit } from "@/resources/BehindTheScenes/episodes/edit";
+import { AboutUsEdit } from "@/resources/aboutUs/edit";
+import { AboutUsShow } from "@/resources/aboutUs/show.tsx";
+import { AboutRedirectList } from "@/resources/aboutUs/AboutRedirectList.tsx";
 
 export const App = () => (
   <Admin
@@ -46,15 +42,15 @@ export const App = () => (
     dashboard={Dashboard}
     requireAuth
   >
-    <Resource name="users" list={UsersList} show={UserShow} />
+    <Resource name="users" list={UserList} show={UserShow} />
 
-    <Resource
-      name="categories"
-      list={CategoryList}
-      create={CategoryCreate}
-      show={CategoryShow}
-      edit={CategoryEdit}
-    />
+    {/*<Resource*/}
+    {/*  name="categories"*/}
+    {/*  list={CategoryList}*/}
+    {/*  create={CategoryCreate}*/}
+    {/*  show={CategoryShow}*/}
+    {/*  edit={CategoryEdit}*/}
+    {/*/>*/}
 
     <Resource
       name="board-quotes"
@@ -82,7 +78,6 @@ export const App = () => (
       options={{ label: "Board Services" }}
     />
 
-    {/* NEW TEAM RESOURCE */}
     <Resource
       name="team"
       list={TeamList}
@@ -93,15 +88,25 @@ export const App = () => (
       }}
     />
 
-    {/* BEHIND THE SCENES */}
     <Resource
       name="episodes"
       list={BehindTheScenesList}
       show={EpisodeShow}
       edit={EpisodeEdit}
-      options={{
-        label: "Behind The Scenes",
-      }}
+      options={{ label: "Behind The Scenes" }}
+    />
+
+    <CustomRoutes>
+      <Route path="/about" element={<AboutUsShow />} />
+      <Route path="/about/edit" element={<AboutUsEdit />} />
+    </CustomRoutes>
+
+    <Resource
+      name="about"
+      list={AboutRedirectList}
+      show={AboutUsShow}
+      edit={AboutUsEdit}
+      options={{ label: "About Us" }}
     />
   </Admin>
 );

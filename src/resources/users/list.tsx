@@ -1,22 +1,20 @@
 import {
   List,
   Datagrid,
-  TextField as RA_TextField,
-  BooleanField,
+  TextField,
+  EmailField,
   DateField,
-  DeleteButton,
   ShowButton,
-  EditButton,
-  ImageField,
 } from "react-admin";
 import { useTheme } from "@mui/material/styles";
 
-export const CategoryList = () => {
+export const UserList = () => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === "dark";
 
   return (
     <List
+      perPage={10}
       sx={{
         padding: "16px",
         borderRadius: "8px",
@@ -31,7 +29,6 @@ export const CategoryList = () => {
       }}
     >
       <Datagrid
-        rowClick="edit"
         sx={{
           "& .column-isDraft": {
             minWidth: "120px",
@@ -70,28 +67,16 @@ export const CategoryList = () => {
               : {},
         }}
       >
-        <RA_TextField source="id" />
-        <RA_TextField source="name" />
-        <RA_TextField source="description" />
-        <ImageField
-          source="imageUrl"
-          label="Image"
-          sx={{ "& img": { maxWidth: "75%", height: "auto" } }}
-        />
-        <BooleanField
-          source="isDraft"
-          sx={{
-            "& .MuiTableCell-root": {
-              minWidth: "120px",
-              width: "120px",
-            },
-          }}
-        />
-        <DateField source="createdAt" showTime />
-        <DateField source="updatedAt" showTime />
+        <TextField source="id" label="ID" />
+        <TextField source="firstName" label="First Name" />
+        <TextField source="lastName" label="Last Name" />
+        <EmailField source="email" label="Email" />
+        <TextField source="phone" label="Phone" />
+        <TextField source="city" label="City" />
+        <TextField source="state" label="State" />
+        <DateField source="createdAt" label="Registration Date" showTime />
+        <DateField source="updatedAt" label="Last Update" showTime />
         <ShowButton />
-        <EditButton />
-        <DeleteButton />
       </Datagrid>
     </List>
   );

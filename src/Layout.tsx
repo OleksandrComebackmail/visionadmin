@@ -60,6 +60,8 @@ const CustomSidebar = (props: SidebarProps) => (
   />
 );
 
+import { CustomMenu } from "./CustomMenu";
+
 export const Layout = ({ children }: { children: ReactNode }) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === "dark";
@@ -68,6 +70,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
     <RALayout
       appBar={GreenAppBar}
       sidebar={CustomSidebar}
+      menu={CustomMenu}
       sx={{
         "& .RaLayout-content": {
           backgroundColor: isDarkMode ? "#141E21" : "#F8F9FA",

@@ -2,19 +2,18 @@ import {
   List,
   Datagrid,
   TextField,
-  EmailField,
-  DateField,
   ShowButton,
+  EditButton,
+  ImageField,
 } from "react-admin";
 import { useTheme } from "@mui/material/styles";
 
-export const UsersList = () => {
+export const TeamList = () => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === "dark";
 
   return (
     <List
-      perPage={10}
       sx={{
         padding: "16px",
         borderRadius: "8px",
@@ -29,11 +28,8 @@ export const UsersList = () => {
       }}
     >
       <Datagrid
+        rowClick="edit"
         sx={{
-          "& .column-isDraft": {
-            minWidth: "120px",
-            width: "120px",
-          },
           "& .RaDatagrid-headerCell": {
             backgroundColor: isDarkMode ? "#214849" : "#9BB8B5",
             color: "white",
@@ -67,16 +63,23 @@ export const UsersList = () => {
               : {},
         }}
       >
-        <TextField source="id" label="ID" />
-        <TextField source="firstName" label="First Name" />
-        <TextField source="lastName" label="Last Name" />
-        <EmailField source="email" label="Email" />
-        <TextField source="phone" label="Phone" />
-        <TextField source="city" label="City" />
-        <TextField source="state" label="State" />
-        <DateField source="createdAt" label="Registration Date" showTime />
-        <DateField source="updatedAt" label="Last Update" showTime />
+        <TextField source="fullName" />
+        <TextField source="position" />
+        <ImageField
+          source="avatar"
+          label="Image"
+          sx={{
+            "& img": {
+              maxWidth: "75%",
+              height: "auto",
+              objectPosition: "left",
+            },
+          }}
+        />
+        {/*<DateField source="createdAt" showTime />*/}
+        {/*<DateField source="updatedAt" showTime />*/}
         <ShowButton />
+        <EditButton />
       </Datagrid>
     </List>
   );
