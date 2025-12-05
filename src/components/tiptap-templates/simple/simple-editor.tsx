@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react";
 
-// --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit";
 import { Image } from "@tiptap/extension-image";
 import { TaskItem, TaskList } from "@tiptap/extension-list";
@@ -14,7 +13,6 @@ import { Subscript } from "@tiptap/extension-subscript";
 import { Superscript } from "@tiptap/extension-superscript";
 import { Selection } from "@tiptap/extensions";
 
-// --- UI Primitives ---
 import { Button } from "@/components/tiptap-ui-primitive/button";
 import { Spacer } from "@/components/tiptap-ui-primitive/spacer";
 import {
@@ -23,7 +21,6 @@ import {
   ToolbarSeparator,
 } from "@/components/tiptap-ui-primitive/toolbar";
 
-// --- Tiptap Node ---
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node/image-upload-node-extension";
 import { HorizontalRule } from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension";
 import "@/components/tiptap-node/blockquote-node/blockquote-node.scss";
@@ -34,7 +31,6 @@ import "@/components/tiptap-node/image-node/image-node.scss";
 import "@/components/tiptap-node/heading-node/heading-node.scss";
 import "@/components/tiptap-node/paragraph-node/paragraph-node.scss";
 
-// --- Tiptap UI ---
 import { HeadingDropdownMenu } from "@/components/tiptap-ui/heading-dropdown-menu";
 import { ImageUploadButton } from "@/components/tiptap-ui/image-upload-button";
 import { ListDropdownMenu } from "@/components/tiptap-ui/list-dropdown-menu";
@@ -64,32 +60,52 @@ import { useIsBreakpoint } from "@/hooks/use-is-breakpoint";
 import { useWindowSize } from "@/hooks/use-window-size";
 import { useCursorVisibility } from "@/hooks/use-cursor-visibility";
 
-// --- Lib ---
-import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
+import { MAX_FILE_SIZE } from "@/lib/tiptap-utils";
 
-// --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss";
+
+const API_URL = "https://api.vision.softwaredoes.com/api/admin";
+
+const uploadFileToApi = async (file: File): Promise<string> => {
+  const token = localStorage.getItem("access_token");
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch(`${API_URL}/pages/media`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error("API Upload failed");
+  }
+
+  const data = await response.json();
+  return data.url;
+};
 
 const MainToolbarContent = ({
   onHighlighterClick,
   onLinkClick,
+  onImageClick,
   isMobile,
 }: {
   onHighlighterClick: () => void;
   onLinkClick: () => void;
+  onImageClick: () => void;
   isMobile: boolean;
 }) => {
   return (
     <>
       <Spacer />
-
       <ToolbarGroup>
         <UndoRedoButton action="undo" />
         <UndoRedoButton action="redo" />
       </ToolbarGroup>
-
       <ToolbarSeparator />
-
       <ToolbarGroup>
         <HeadingDropdownMenu levels={[1, 2, 3, 4]} portal={isMobile} />
         <ListDropdownMenu
@@ -99,9 +115,7 @@ const MainToolbarContent = ({
         <BlockquoteButton />
         <CodeBlockButton />
       </ToolbarGroup>
-
       <ToolbarSeparator />
-
       <ToolbarGroup>
         <MarkButton type="bold" />
         <MarkButton type="italic" />
@@ -115,31 +129,26 @@ const MainToolbarContent = ({
         )}
         {!isMobile ? <LinkPopover /> : <LinkButton onClick={onLinkClick} />}
       </ToolbarGroup>
-
       <ToolbarSeparator />
-
       <ToolbarGroup>
         <MarkButton type="superscript" />
         <MarkButton type="subscript" />
       </ToolbarGroup>
-
       <ToolbarSeparator />
-
       <ToolbarGroup>
         <TextAlignButton align="left" />
         <TextAlignButton align="center" />
         <TextAlignButton align="right" />
         <TextAlignButton align="justify" />
       </ToolbarGroup>
-
       <ToolbarSeparator />
-
       <ToolbarGroup>
-        <ImageUploadButton text="Add" />
+        {/* 🛠️ 2. BIND CLICK HANDLER HERE */}
+        <div onClick={onImageClick}>
+          <ImageUploadButton text="Add" />
+        </div>
       </ToolbarGroup>
-
       <Spacer />
-
       {isMobile && <ToolbarSeparator />}
     </>
   );
@@ -163,9 +172,7 @@ const MobileToolbarContent = ({
         )}
       </Button>
     </ToolbarGroup>
-
     <ToolbarSeparator />
-
     {type === "highlighter" ? (
       <ColorHighlightPopoverContent />
     ) : (
@@ -191,6 +198,8 @@ export function SimpleEditor({
     "main",
   );
   const toolbarRef = useRef<HTMLDivElement>(null);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -221,18 +230,44 @@ export function SimpleEditor({
       Superscript,
       Subscript,
       Selection,
+
       ImageUploadNode.configure({
         accept: "image/*",
         maxSize: MAX_FILE_SIZE,
-        limit: 3,
-        upload: handleImageUpload,
-        onError: (error) => console.error("Upload failed:", error),
+        limit: 1,
+        upload: async (files: File[]) => {
+          const url = await uploadFileToApi(files[0]);
+          return { src: url, alt: files[0].name };
+        },
       }),
     ],
     content,
   });
 
-  // When the editor content changes, notify parent
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const files = event.target.files;
+    if (!files || files.length === 0 || !editor) return;
+
+    try {
+      const file = files[0];
+      const url = await uploadFileToApi(file);
+
+      editor.chain().focus().setImage({ src: url }).run();
+    } catch (error) {
+      console.error("Failed to upload image:", error);
+    } finally {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const triggerImageUpload = () => {
+    fileInputRef.current?.click();
+  };
+
   useEffect(() => {
     if (!editor) return;
     const handler = () => {
@@ -246,7 +281,7 @@ export function SimpleEditor({
       editor.off("update", handler);
     };
   }, [editor, onUpdate, onJsonUpdate]);
-  // Update editor content when `content` prop changes
+
   useEffect(() => {
     if (!editor) return;
     const current = editor.getHTML();
@@ -269,6 +304,14 @@ export function SimpleEditor({
   return (
     <div className={className ?? "simple-editor-wrapper"}>
       <EditorContext.Provider value={{ editor }}>
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          accept="image/*"
+          style={{ display: "none" }}
+        />
+
         <Toolbar
           ref={toolbarRef}
           style={{
@@ -283,6 +326,7 @@ export function SimpleEditor({
             <MainToolbarContent
               onHighlighterClick={() => setMobileView("highlighter")}
               onLinkClick={() => setMobileView("link")}
+              onImageClick={triggerImageUpload}
               isMobile={isMobile}
             />
           ) : (

@@ -132,7 +132,6 @@ export const dataProvider: DataProvider = {
       const { json } = await httpClient(url);
 
       const data = (Array.isArray(json.data) ? json.data : []).map(normalizeId);
-      // Coerce total to number (API may return string). Fallback to data length
       const totalRaw = json?.meta?.total ?? json?.total ?? data.length;
       const total = Number(totalRaw) || data.length;
 
@@ -173,15 +172,25 @@ export const dataProvider: DataProvider = {
       return { data, total };
     }
     if (resource === "about") {
-      // The backend exposes a single about page at /api/admin/about/page
       const url = `https://api.vision.softwaredoes.com/api/admin/about/page`;
       const { json } = await httpClient(url);
-      // Normalize to array for list responses
       const item = json ?? {};
       const data = Array.isArray(item)
         ? item.map(normalizeId)
         : [normalizeId(item)];
       return { data, total: data.length };
+    }
+
+    if (resource === "news") {
+      const { page, perPage } = params.pagination || { page: 1, perPage: 10 };
+      const url = `https://api.vision.softwaredoes.com/api/admin/news?limit=${perPage}&page=${page}`;
+      const { json } = await httpClient(url);
+
+      const data = (Array.isArray(json.data) ? json.data : []).map(normalizeId);
+      const totalRaw = json?.meta?.total ?? json?.total ?? data.length;
+      const total = Number(totalRaw) || data.length;
+
+      return { data, total };
     }
     return base.getList(resource, params);
   },
@@ -241,6 +250,13 @@ export const dataProvider: DataProvider = {
           id: "page",
         },
       };
+    }
+
+    if (resource === "news") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/news/${params.id}`;
+      const { json } = await httpClient(url);
+      const item = json.data || json;
+      return { data: normalizeId(item) };
     }
     return base.getOne(resource, params);
   },
@@ -309,6 +325,15 @@ export const dataProvider: DataProvider = {
 
       return { data: { ...json, id: "page" } };
     }
+
+    if (resource === "news") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/news/${params.id}`;
+      const { json } = await httpClient(url, {
+        method: "PUT",
+        body: JSON.stringify(params.data),
+      });
+      return { data: normalizeId(json) };
+    }
     return base.update(resource, params);
   },
 
@@ -318,6 +343,15 @@ export const dataProvider: DataProvider = {
   ): Promise<CreateResult> => {
     if (resource === "episodes") {
       const url = `https://api.vision.softwaredoes.com/api/admin/episodes`;
+      const { json } = await httpClient(url, {
+        method: "POST",
+        body: JSON.stringify(params.data),
+      });
+      return { data: normalizeId(json) };
+    }
+
+    if (resource === "news") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/news`;
       const { json } = await httpClient(url, {
         method: "POST",
         body: JSON.stringify(params.data),

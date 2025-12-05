@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import { EpisodeDialogTable } from "@/resources/BehindTheScenes/episodes/EpisodeDialogTable.tsx";
 import { BehindPageSection } from "@/resources/BehindTheScenes/journey/BehindPageSection.tsx";
+import { NewsListTable } from "@/resources/BehindTheScenes/news/NewsListTable.tsx"; // Імпорт нової таблиці
 
 export const BehindTheScenesList = () => {
   return (
@@ -12,10 +13,18 @@ export const BehindTheScenesList = () => {
         overflow: "hidden",
       }}
     >
-      <BehindPageSection />
+      <Box
+        sx={{
+          flex: 1,
+          overflowY: "auto",
+          paddingBottom: 4,
+        }}
+      >
+        <BehindPageSection />
 
-      <Box sx={{ flex: 1, overflow: "hidden", minHeight: 0 }}>
         <EpisodeDialogTable />
+
+        <NewsListTable />
       </Box>
     </Box>
   );

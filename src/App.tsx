@@ -26,6 +26,9 @@ import "@/styles/admin-overrides.css";
 import { AboutUsEdit } from "@/resources/aboutUs/edit";
 import { AboutUsShow } from "@/resources/aboutUs/show.tsx";
 import { AboutRedirectList } from "@/resources/aboutUs/AboutRedirectList.tsx";
+import { NewsCreate } from "@/resources/BehindTheScenes/news/NewsCreate.tsx";
+import { NewsEdit } from "@/resources/BehindTheScenes/news/NewsEdit.tsx";
+import { NewsShow } from "@/resources/BehindTheScenes/news/NewsShow.tsx";
 
 export const App = () => (
   <Admin
@@ -100,5 +103,7 @@ export const App = () => (
       edit={AboutUsEdit}
       options={{ label: "About Us" }}
     />
+
+    <Resource name="news" create={NewsCreate} edit={NewsEdit} show={NewsShow} />
   </Admin>
 );
