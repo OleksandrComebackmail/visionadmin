@@ -1,24 +1,24 @@
 /* Make editor full width */
 .tiptap-ra-wrapper {
-    width: 100%;
-    border: 1px solid var(--tt-border-color);
-    border-radius: var(--tt-radius-lg);
+  width: 100%;
+  border: 1px solid var(--tt-border-color);
+  border-radius: var(--tt-radius-lg);
 }
 
 /* Editor content */
 .tiptap-ra-wrapper .ProseMirror {
-    min-height: 300px;
-    padding: 20px;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
+  min-height: 300px;
+  padding: 20px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Toolbar full width */
 .tiptap-ra-wrapper .tiptap-menubar {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 10px 0;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 0;
 }

@@ -8,17 +8,11 @@ import { UserList } from "./resources/users/list.tsx";
 import { UserShow } from "./resources/users/show.tsx";
 
 import { BehindTheScenesList } from "@/resources/BehindTheScenes";
-import { EpisodeShow } from "@/resources/BehindTheScenes/episodes/show";
-import { EpisodeEdit } from "@/resources/BehindTheScenes/episodes/edit";
 import { TeamList } from "@/resources/team/list.tsx";
 import { TeamShow } from "@/resources/team/show.tsx";
 import { TeamEdit } from "@/resources/team/edit.tsx";
 
 import { dataProvider } from "./dataProvider";
-import { BoardQuoteList } from "./resources/boardQuotes/list.tsx";
-import { BoardQuoteCreate } from "./resources/boardQuotes/create.tsx";
-import { BoardQuoteShow } from "./resources/boardQuotes/show.tsx";
-import { BoardQuoteEdit } from "./resources/boardQuotes/edit.tsx";
 import { AuthorQuoteCreate } from "./resources/authorQuotes/create.tsx";
 import { AuthorQuoteEdit } from "./resources/authorQuotes/edit.tsx";
 import { AuthorQuoteList } from "./resources/authorQuotes/list.tsx";
@@ -52,14 +46,14 @@ export const App = () => (
     {/*  edit={CategoryEdit}*/}
     {/*/>*/}
 
-    <Resource
-      name="board-quotes"
-      list={BoardQuoteList}
-      create={BoardQuoteCreate}
-      show={BoardQuoteShow}
-      edit={BoardQuoteEdit}
-      options={{ label: "Vision Statements" }}
-    />
+    {/*<Resource*/}
+    {/*  name="board-quotes"*/}
+    {/*  list={BoardQuoteList}*/}
+    {/*  create={BoardQuoteCreate}*/}
+    {/*  show={BoardQuoteShow}*/}
+    {/*  edit={BoardQuoteEdit}*/}
+    {/*  options={{ label: "Vision Statements" }}*/}
+    {/*/>*/}
 
     <Resource
       name="author-quotes"
@@ -91,8 +85,6 @@ export const App = () => (
     <Resource
       name="episodes"
       list={BehindTheScenesList}
-      show={EpisodeShow}
-      edit={EpisodeEdit}
       options={{ label: "Behind The Scenes" }}
     />
 

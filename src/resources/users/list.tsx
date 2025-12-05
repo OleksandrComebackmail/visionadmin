@@ -67,7 +67,6 @@ export const UserList = () => {
               : {},
         }}
       >
-        <TextField source="id" label="ID" />
         <TextField source="firstName" label="First Name" />
         <TextField source="lastName" label="Last Name" />
         <EmailField source="email" label="Email" />
@@ -75,7 +74,6 @@ export const UserList = () => {
         <TextField source="city" label="City" />
         <TextField source="state" label="State" />
         <DateField source="createdAt" label="Registration Date" showTime />
-        <DateField source="updatedAt" label="Last Update" showTime />
         <ShowButton />
       </Datagrid>
     </List>

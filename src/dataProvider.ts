@@ -231,6 +231,17 @@ export const dataProvider: DataProvider = {
         },
       };
     }
+
+    if (resource === "behind") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/behind/page`;
+      const { json } = await httpClient(url);
+      return {
+        data: {
+          ...json,
+          id: "page",
+        },
+      };
+    }
     return base.getOne(resource, params);
   },
 
@@ -286,6 +297,17 @@ export const dataProvider: DataProvider = {
         body: JSON.stringify(params.data),
       });
       return { data: normalizeId(json) };
+    }
+    if (resource === "behind") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/behind/page`;
+      const { id, ...dataToStart } = params.data;
+
+      const { json } = await httpClient(url, {
+        method: "PUT",
+        body: JSON.stringify(dataToStart),
+      });
+
+      return { data: { ...json, id: "page" } };
     }
     return base.update(resource, params);
   },

@@ -2,7 +2,6 @@ import {
   List,
   Datagrid,
   TextField,
-  DateField,
   ShowButton,
   EditButton,
   ImageField,
@@ -91,7 +90,6 @@ export const AuthorQuoteList = () => {
               : {},
         }}
       >
-        <TextField source="id" />
         <TextField source="text" />
         <TextField source="author" />
         <ImageField
@@ -99,8 +97,6 @@ export const AuthorQuoteList = () => {
           label="Image"
           sx={{ "& img": { maxWidth: "90%", height: "auto" } }}
         />
-        <DateField source="createdAt" showTime />
-        <DateField source="updatedAt" showTime />
         <ShowButton />
         <EditButton />
         <DeleteButton />
