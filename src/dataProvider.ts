@@ -171,8 +171,37 @@ export const dataProvider: DataProvider = {
       const total = Number(totalRaw) || data.length;
       return { data, total };
     }
+    if (resource === "testimonials") {
+      const { page, perPage } = params.pagination || { page: 1, perPage: 10 };
+      const url = `https://api.vision.softwaredoes.com/api/admin/home/testimonials?limit=${perPage}&page=${page}`;
+      const { json } = await httpClient(url);
+      const data = (Array.isArray(json.data) ? json.data : []).map(normalizeId);
+      const totalRaw = json?.meta?.total ?? json?.total ?? data.length;
+      const total = Number(totalRaw) || data.length;
+      return { data, total };
+    }
     if (resource === "about") {
       const url = `https://api.vision.softwaredoes.com/api/admin/about/page`;
+      const { json } = await httpClient(url);
+      const item = json ?? {};
+      const data = Array.isArray(item)
+        ? item.map(normalizeId)
+        : [normalizeId(item)];
+      return { data, total: data.length };
+    }
+
+    if (resource === "terms") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/termsandpolicy/terms`;
+      const { json } = await httpClient(url);
+      const item = json ?? {};
+      const data = Array.isArray(item)
+        ? item.map(normalizeId)
+        : [normalizeId(item)];
+      return { data, total: data.length };
+    }
+
+    if (resource === "privacy") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/termsandpolicy/policy`;
       const { json } = await httpClient(url);
       const item = json ?? {};
       const data = Array.isArray(item)
@@ -229,6 +258,11 @@ export const dataProvider: DataProvider = {
       const { json } = await httpClient(url);
       return { data: normalizeId(json) };
     }
+    if (resource === "testimonials") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/home/testimonials/${params.id}`;
+      const { json } = await httpClient(url);
+      return { data: normalizeId(json) };
+    }
     if (resource === "about") {
       const url = `https://api.vision.softwaredoes.com/api/admin/about/page`;
       const { json } = await httpClient(url);
@@ -237,6 +271,30 @@ export const dataProvider: DataProvider = {
         data: {
           ...json.content,
           id: "about-page-id",
+        },
+      };
+    }
+
+    if (resource === "terms") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/termsandpolicy/terms`;
+      const { json } = await httpClient(url);
+
+      return {
+        data: {
+          ...json,
+          id: "terms-page-id",
+        },
+      };
+    }
+
+    if (resource === "privacy") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/termsandpolicy/policy`;
+      const { json } = await httpClient(url);
+
+      return {
+        data: {
+          ...json,
+          id: "privacy-page-id",
         },
       };
     }
@@ -305,6 +363,14 @@ export const dataProvider: DataProvider = {
       });
       return { data: normalizeId(json) };
     }
+    if (resource === "testimonials") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/home/testimonials/${params.id}`;
+      const { json } = await httpClient(url, {
+        method: "PUT",
+        body: JSON.stringify(params.data),
+      });
+      return { data: normalizeId(json) };
+    }
     if (resource === "about") {
       // Update about page via PUT /api/admin/about/page
       const url = `https://api.vision.softwaredoes.com/api/admin/about/page`;
@@ -316,6 +382,7 @@ export const dataProvider: DataProvider = {
     }
     if (resource === "behind") {
       const url = `https://api.vision.softwaredoes.com/api/admin/behind/page`;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { id, ...dataToStart } = params.data;
 
       const { json } = await httpClient(url, {
@@ -334,6 +401,26 @@ export const dataProvider: DataProvider = {
       });
       return { data: normalizeId(json) };
     }
+    if (resource === "terms") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/termsandpolicy/terms`;
+      const { title, content } = params.data; // Беремо тільки потрібні поля
+
+      const { json } = await httpClient(url, {
+        method: "PUT",
+        body: JSON.stringify({ title, content }),
+      });
+      return { data: { ...json, id: "terms-page-id" } };
+    }
+    if (resource === "privacy") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/termsandpolicy/policy`;
+      const { title, content } = params.data; // Беремо тільки потрібні поля
+
+      const { json } = await httpClient(url, {
+        method: "PUT",
+        body: JSON.stringify({ title, content }),
+      });
+      return { data: { ...json, id: "privacy-page-id" } };
+    }
     return base.update(resource, params);
   },
 
@@ -343,6 +430,14 @@ export const dataProvider: DataProvider = {
   ): Promise<CreateResult> => {
     if (resource === "episodes") {
       const url = `https://api.vision.softwaredoes.com/api/admin/episodes`;
+      const { json } = await httpClient(url, {
+        method: "POST",
+        body: JSON.stringify(params.data),
+      });
+      return { data: normalizeId(json) };
+    }
+    if (resource === "testimonials") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/home/testimonials`;
       const { json } = await httpClient(url, {
         method: "POST",
         body: JSON.stringify(params.data),
@@ -382,6 +477,11 @@ export const dataProvider: DataProvider = {
     }
     if (resource === "episodes") {
       const url = `https://api.vision.softwaredoes.com/api/admin/episodes/${params.id}`;
+      await httpClient(url, { method: "DELETE" });
+      return { data: { id: params.id } };
+    }
+    if (resource === "testimonials") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/home/testimonials/${params.id}`;
       await httpClient(url, { method: "DELETE" });
       return { data: { id: params.id } };
     }

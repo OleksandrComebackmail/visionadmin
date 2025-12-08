@@ -76,8 +76,6 @@ export const TeamList = () => {
             },
           }}
         />
-        {/*<DateField source="createdAt" showTime />*/}
-        {/*<DateField source="updatedAt" showTime />*/}
         <ShowButton />
         <EditButton />
       </Datagrid>

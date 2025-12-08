@@ -23,12 +23,22 @@ import { BoardServiceShow } from "./resources/boardServices/show.tsx";
 import "@/styles/_variables.scss";
 import "@/components/tiptap-overrides.css";
 import "@/styles/admin-overrides.css";
+
 import { AboutUsEdit } from "@/resources/aboutUs/edit";
 import { AboutUsShow } from "@/resources/aboutUs/show.tsx";
 import { AboutRedirectList } from "@/resources/aboutUs/AboutRedirectList.tsx";
+
 import { NewsCreate } from "@/resources/BehindTheScenes/news/NewsCreate.tsx";
 import { NewsEdit } from "@/resources/BehindTheScenes/news/NewsEdit.tsx";
 import { NewsShow } from "@/resources/BehindTheScenes/news/NewsShow.tsx";
+import { HomePageList } from "@/resources/HomePage";
+
+import { TermsRedirectList } from "@/resources/termsAndConditions/TermsRedirectList.tsx";
+import { TermsShow } from "@/resources/termsAndConditions/show.tsx";
+import { TermsEdit } from "@/resources/termsAndConditions/edit.tsx";
+import { PrivacyRedirectList } from "@/resources/privacyPolicy/PrivacyRedirectList.tsx";
+import { PrivacyShow } from "@/resources/privacyPolicy/show.tsx";
+import { PrivacyEdit } from "@/resources/privacyPolicy/edit.tsx";
 
 export const App = () => (
   <Admin
@@ -40,23 +50,6 @@ export const App = () => (
     requireAuth
   >
     <Resource name="users" list={UserList} show={UserShow} />
-
-    {/*<Resource*/}
-    {/*  name="categories"*/}
-    {/*  list={CategoryList}*/}
-    {/*  create={CategoryCreate}*/}
-    {/*  show={CategoryShow}*/}
-    {/*  edit={CategoryEdit}*/}
-    {/*/>*/}
-
-    {/*<Resource*/}
-    {/*  name="board-quotes"*/}
-    {/*  list={BoardQuoteList}*/}
-    {/*  create={BoardQuoteCreate}*/}
-    {/*  show={BoardQuoteShow}*/}
-    {/*  edit={BoardQuoteEdit}*/}
-    {/*  options={{ label: "Vision Statements" }}*/}
-    {/*/>*/}
 
     <Resource
       name="author-quotes"
@@ -91,9 +84,23 @@ export const App = () => (
       options={{ label: "Behind The Scenes" }}
     />
 
+    <Resource
+      name="testimonials"
+      list={HomePageList}
+      options={{ label: "Home" }}
+    />
+
+    <Resource name="news" create={NewsCreate} edit={NewsEdit} show={NewsShow} />
+
     <CustomRoutes>
       <Route path="/about" element={<AboutUsShow />} />
       <Route path="/about/edit" element={<AboutUsEdit />} />
+
+      <Route path="/terms" element={<TermsShow />} />
+      <Route path="/terms/edit" element={<TermsEdit />} />
+
+      <Route path="/privacy" element={<PrivacyShow />} />
+      <Route path="/privacy/edit" element={<PrivacyEdit />} />
     </CustomRoutes>
 
     <Resource
@@ -104,6 +111,20 @@ export const App = () => (
       options={{ label: "About Us" }}
     />
 
-    <Resource name="news" create={NewsCreate} edit={NewsEdit} show={NewsShow} />
+    <Resource
+      name="terms"
+      list={TermsRedirectList}
+      show={TermsShow}
+      edit={TermsEdit}
+      options={{ label: "Terms & Policy" }}
+    />
+
+    <Resource
+      name="privacy"
+      list={PrivacyRedirectList}
+      show={PrivacyShow}
+      edit={PrivacyEdit}
+      options={{ label: "Privacy Policy" }}
+    />
   </Admin>
 );

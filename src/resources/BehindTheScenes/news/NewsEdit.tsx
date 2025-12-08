@@ -1,7 +1,6 @@
 import { Edit, SimpleForm, TextInput, required } from "react-admin";
-// Імпортуємо ваш компонент
 import { TipTapAdminInput } from "@/components/TipTapAdminInput";
-import { ImageUploadField } from "@/resources/categories/ImageUploadField.tsx"; // Перевірте шлях імпорту
+import { ImageUploadField } from "@/resources/categories/ImageUploadField.tsx";
 
 export const NewsEdit = () => (
   <Edit>
@@ -17,7 +16,6 @@ export const NewsEdit = () => (
         label="Short Description"
       />
 
-      {/* Замінили TextInput на TipTapAdminInput */}
       <TipTapAdminInput source="content" label="Content" />
     </SimpleForm>
   </Edit>

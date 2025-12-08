@@ -6,13 +6,13 @@ import { Button, useInput, useNotify } from "react-admin";
 interface ImageUploadFieldProps {
   source: string;
   label: string;
-  allowVideo?: boolean; // ← NEW
+  allowVideo?: boolean;
 }
 
 const API_URL = "https://api.vision.softwaredoes.com/api/admin";
 
 export const ImageUploadField = (props: ImageUploadFieldProps) => {
-  const { source, label, allowVideo = false } = props; // ← NEW
+  const { source, label, allowVideo = false } = props;
   const notify = useNotify();
   const [uploading, setUploading] = useState(false);
 
@@ -53,7 +53,6 @@ export const ImageUploadField = (props: ImageUploadFieldProps) => {
 
       const data = await response.json();
 
-      // API returns {url, key, type}
       const newUrl = data.url ?? "";
 
       field.onChange(newUrl);
@@ -94,7 +93,7 @@ export const ImageUploadField = (props: ImageUploadFieldProps) => {
           ref={fileInputRef}
           id="image-upload"
           type="file"
-          accept={allowVideo ? "image/*,video/*" : "image/*"} // ← NEW
+          accept={allowVideo ? "image/*,video/*" : "image/*"}
           onChange={handleImageUpload}
           style={{ display: "none" }}
         />

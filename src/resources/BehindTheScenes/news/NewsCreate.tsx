@@ -17,7 +17,6 @@ export const NewsCreate = () => (
         label="Short Description"
       />
 
-      {/* Замінили TextInput на TipTapAdminInput */}
       <TipTapAdminInput source="content" label="Content" />
     </SimpleForm>
   </Create>

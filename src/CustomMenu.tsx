@@ -97,9 +97,20 @@ export const CustomMenu = () => (
     </MenuGroup>
 
     <MenuGroup label="Website Content">
+      <Menu.ResourceItem name="testimonials" leftIcon={<WebIcon />} />
+      <MenuItemLink to="/about" primaryText="About Us" leftIcon={<WebIcon />} />
       <Menu.ResourceItem name="team" leftIcon={<WebIcon />} />
       <Menu.ResourceItem name="episodes" leftIcon={<WebIcon />} />
-      <MenuItemLink to="/about" primaryText="About Us" leftIcon={<WebIcon />} />
+      <MenuItemLink
+        to="/terms"
+        primaryText="Terms and Conditions"
+        leftIcon={<WebIcon />}
+      />
+      <MenuItemLink
+        to="/privacy"
+        primaryText="Privacy Policy"
+        leftIcon={<WebIcon />}
+      />
     </MenuGroup>
   </Menu>
 );

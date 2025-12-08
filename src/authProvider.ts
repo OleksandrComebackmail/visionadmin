@@ -69,8 +69,6 @@ async function refreshWithRefreshToken(): Promise<void> {
   if (data.refresh_token) {
     localStorage.setItem(REFRESH_KEY, data.refresh_token);
   }
-
-  console.log("Tokens refreshed successfully");
 }
 
 export const authProvider: AuthProvider = {
@@ -98,7 +96,7 @@ export const authProvider: AuthProvider = {
   async logout() {
     localStorage.removeItem(ACCESS_KEY);
     localStorage.removeItem(REFRESH_KEY);
-    return Promise.resolve();
+    return Promise.resolve("/login");
   },
 
   async checkError(error: HttpError) {

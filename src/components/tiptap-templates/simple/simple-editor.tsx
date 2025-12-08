@@ -50,12 +50,10 @@ import { MarkButton } from "@/components/tiptap-ui/mark-button";
 import { TextAlignButton } from "@/components/tiptap-ui/text-align-button";
 import { UndoRedoButton } from "@/components/tiptap-ui/undo-redo-button";
 
-// --- Icons ---
 import { ArrowLeftIcon } from "@/components/tiptap-icons/arrow-left-icon";
 import { HighlighterIcon } from "@/components/tiptap-icons/highlighter-icon";
 import { LinkIcon } from "@/components/tiptap-icons/link-icon";
 
-// --- Hooks ---
 import { useIsBreakpoint } from "@/hooks/use-is-breakpoint";
 import { useWindowSize } from "@/hooks/use-window-size";
 import { useCursorVisibility } from "@/hooks/use-cursor-visibility";
@@ -143,7 +141,6 @@ const MainToolbarContent = ({
       </ToolbarGroup>
       <ToolbarSeparator />
       <ToolbarGroup>
-        {/* 🛠️ 2. BIND CLICK HANDLER HERE */}
         <div onClick={onImageClick}>
           <ImageUploadButton text="Add" />
         </div>
