@@ -485,6 +485,11 @@ export const dataProvider: DataProvider = {
       await httpClient(url, { method: "DELETE" });
       return { data: { id: params.id } };
     }
+    if (resource === "news") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/news/${params.id}`;
+      await httpClient(url, { method: "DELETE" });
+      return { data: { id: params.id } };
+    }
     return base.delete(resource, params);
   },
 

@@ -68,7 +68,6 @@ export const AboutUsEdit = () => {
         }}
       >
         <TextInput source="description" label="Description" fullWidth />
-        <TextInput source="imageUrl" label="Cover Hero Image URL" fullWidth />
         <ImageUploadField
           source="imageUrl"
           label="Upload Hero Image's Image"

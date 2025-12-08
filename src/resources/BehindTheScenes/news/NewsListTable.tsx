@@ -2,16 +2,55 @@ import {
   List,
   Datagrid,
   TextField,
-  DeleteButton,
   ImageField,
   EditButton,
   ShowButton,
   Pagination,
+  useDelete,
+  useRefresh,
+  useRecordContext,
 } from "react-admin";
 import { Box, Typography, Button } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { IconButton } from "@mui/material";
+
+const DeleteButtonWithRefresh = () => {
+  const record = useRecordContext();
+  const refresh = useRefresh();
+  const [deleteOne, { isLoading }] = useDelete();
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (
+      record &&
+      window.confirm("Are you sure you want to delete this news?")
+    ) {
+      deleteOne(
+        "news",
+        { id: record.id },
+        {
+          onSuccess: () => {
+            refresh();
+          },
+        },
+      );
+    }
+  };
+
+  return (
+    <IconButton
+      onClick={handleDelete}
+      disabled={isLoading}
+      size="small"
+      color="error"
+    >
+      <DeleteIcon />
+    </IconButton>
+  );
+};
 
 export const NewsListTable = () => {
   const theme = useTheme();
@@ -60,7 +99,7 @@ export const NewsListTable = () => {
       <List
         resource="news"
         actions={false}
-        disableSyncWithLocation // ВАЖЛИВО: Щоб не конфліктувало з пагінацією епізодів
+        disableSyncWithLocation
         perPage={10}
         pagination={<Pagination rowsPerPageOptions={[5, 10, 25]} />}
         sx={{
@@ -70,7 +109,6 @@ export const NewsListTable = () => {
       >
         <Datagrid
           bulkActionButtons={false}
-          rowClick="show"
           sx={{
             "& .RaDatagrid-headerCell": {
               backgroundColor: isDarkMode ? "#214849" : "#9BB8B5",
@@ -115,7 +153,7 @@ export const NewsListTable = () => {
 
           <ShowButton />
           <EditButton />
-          <DeleteButton />
+          <DeleteButtonWithRefresh />
         </Datagrid>
       </List>
     </Box>

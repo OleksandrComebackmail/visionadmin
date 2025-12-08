@@ -17,7 +17,6 @@ export const AuthorQuoteCreate = () => (
         fullWidth
         helperText="Enter the author's name"
       />
-      <TextInput source="imageUrl" label="Image" fullWidth />
       <ImageUploadField source="imageUrl" label="Upload author's Image" />
     </SimpleForm>
   </Create>

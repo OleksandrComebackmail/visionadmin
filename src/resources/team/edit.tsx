@@ -80,7 +80,6 @@ export const TeamEdit = () => {
           rows={6}
           fullWidth
         />
-        <TextInput source="avatar" label="Current Avatar" fullWidth />
         <ImageUploadField source="avatar" label="Upload author's Image" />
         <NumberInput source="sortOrder" label="Sort Order" defaultValue={1} />
       </SimpleForm>

@@ -6,7 +6,6 @@ export const NewsEdit = () => (
   <Edit>
     <SimpleForm>
       <TextInput source="title" fullWidth validate={required()} />
-      <TextInput source="preview" label="Preview Image URL" fullWidth />
       <ImageUploadField source="preview" label="Preview" />
       <TextInput
         source="description"
