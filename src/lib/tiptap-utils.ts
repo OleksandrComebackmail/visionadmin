@@ -13,7 +13,7 @@ import {
   type NodeWithPos,
 } from "@tiptap/react";
 
-export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+export const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 export const MAC_SYMBOLS: Record<string, string> = {
   mod: "⌘",
@@ -155,7 +155,6 @@ export function focusNextNode(editor: Editor) {
   const para = paragraphType.create();
   let tr = state.tr.insert(end, para);
 
-  // Place the selection inside the new paragraph
   const $inside = tr.doc.resolve(end + 1);
   tr = tr.setSelection(TextSelection.near($inside)).scrollIntoView();
   view.dispatch(tr);
@@ -237,7 +236,6 @@ export function findNodePosition(props: {
 
   if (!editor || !editor.state?.doc) return null;
 
-  // Zero is valid position
   const hasValidNode = node !== undefined && node !== null;
   const hasValidPos = isValidPosition(nodePos);
 
@@ -245,14 +243,11 @@ export function findNodePosition(props: {
     return null;
   }
 
-  // First search for the node in the document if we have a node
   if (hasValidNode) {
     let foundPos = -1;
     let foundNode: PMNode | null = null;
 
     editor.state.doc.descendants((currentNode, pos) => {
-      // TODO: Needed?
-      // if (currentNode.type && currentNode.type.name === node!.type.name) {
       if (currentNode === node) {
         foundPos = pos;
         foundNode = currentNode;
@@ -266,7 +261,6 @@ export function findNodePosition(props: {
     }
   }
 
-  // If we have a valid position, use findNodeAtPosition
   if (hasValidPos) {
     const nodeAtPos = findNodeAtPosition(editor, nodePos!);
     if (nodeAtPos) {
@@ -294,7 +288,6 @@ export function isNodeTypeSelected(
   const { selection } = editor.state;
   if (selection.empty) return false;
 
-  // Direct node selection check
   if (selection instanceof NodeSelection) {
     const selectedNode = selection.node;
     return selectedNode
@@ -302,7 +295,6 @@ export function isNodeTypeSelected(
       : false;
   }
 
-  // Depth-based ancestor node check
   if (checkAncestorNodes) {
     const { $from } = selection;
     for (let depth = $from.depth; depth > 0; depth--) {
@@ -343,7 +335,7 @@ export function selectionWithinConvertibleTypes(
     state.doc.nodesBetween(selection.from, selection.to, (node) => {
       if (node.isTextblock && !allowed.has(node.type.name)) {
         valid = false;
-        return false; // stop early
+        return false;
       }
       return valid;
     });
@@ -365,7 +357,6 @@ export const handleImageUpload = async (
   onProgress?: (event: { progress: number }) => void,
   abortSignal?: AbortSignal,
 ): Promise<string> => {
-  // Validate file
   if (!file) {
     throw new Error("No file provided");
   }
@@ -376,8 +367,6 @@ export const handleImageUpload = async (
     );
   }
 
-  // For demo/testing: Simulate upload progress. In production, replace the following code
-  // with your own upload implementation.
   for (let progress = 0; progress <= 100; progress += 10) {
     if (abortSignal?.aborted) {
       throw new Error("Upload cancelled");

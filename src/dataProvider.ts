@@ -372,7 +372,6 @@ export const dataProvider: DataProvider = {
       return { data: normalizeId(json) };
     }
     if (resource === "about") {
-      // Update about page via PUT /api/admin/about/page
       const url = `https://api.vision.softwaredoes.com/api/admin/about/page`;
       const { json } = await httpClient(url, {
         method: "PUT",
@@ -382,7 +381,6 @@ export const dataProvider: DataProvider = {
     }
     if (resource === "behind") {
       const url = `https://api.vision.softwaredoes.com/api/admin/behind/page`;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { id, ...dataToStart } = params.data;
 
       const { json } = await httpClient(url, {
@@ -403,7 +401,7 @@ export const dataProvider: DataProvider = {
     }
     if (resource === "terms") {
       const url = `https://api.vision.softwaredoes.com/api/admin/termsandpolicy/terms`;
-      const { title, content } = params.data; // Беремо тільки потрібні поля
+      const { title, content } = params.data;
 
       const { json } = await httpClient(url, {
         method: "PUT",
@@ -413,7 +411,7 @@ export const dataProvider: DataProvider = {
     }
     if (resource === "privacy") {
       const url = `https://api.vision.softwaredoes.com/api/admin/termsandpolicy/policy`;
-      const { title, content } = params.data; // Беремо тільки потрібні поля
+      const { title, content } = params.data;
 
       const { json } = await httpClient(url, {
         method: "PUT",
