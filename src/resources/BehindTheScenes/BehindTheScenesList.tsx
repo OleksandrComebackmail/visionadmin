@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
 import { EpisodeDialogTable } from "@/resources/BehindTheScenes/episodes/EpisodeDialogTable.tsx";
 import { BehindPageSection } from "@/resources/BehindTheScenes/journey/BehindPageSection.tsx";
-import { NewsListTable } from "@/resources/BehindTheScenes/news/NewsListTable.tsx"; // Імпорт нової таблиці
+import { NewsListTable } from "@/resources/BehindTheScenes/news/NewsListTable.tsx";
+import { SubscribeNowSection } from "@/resources/BehindTheScenes/subscribeNow /SubscribeNowSection.tsx"; // Імпорт нової таблиці
 
 export const BehindTheScenesList = () => {
   return (
@@ -25,6 +26,8 @@ export const BehindTheScenesList = () => {
         <EpisodeDialogTable />
 
         <NewsListTable />
+
+        <SubscribeNowSection />
       </Box>
     </Box>
   );

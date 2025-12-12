@@ -210,6 +210,14 @@ export const dataProvider: DataProvider = {
       return { data, total: data.length };
     }
 
+    if (resource === "subscription") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/behind/page/subscription`;
+      const { json } = await httpClient(url);
+      const item = json ?? {};
+      const data = [{ ...item, id: "subscription-page-id" }];
+      return { data, total: data.length };
+    }
+
     if (resource === "news") {
       const { page, perPage } = params.pagination || { page: 1, perPage: 10 };
       const url = `https://api.vision.softwaredoes.com/api/admin/news?limit=${perPage}&page=${page}`;
@@ -310,6 +318,17 @@ export const dataProvider: DataProvider = {
       };
     }
 
+    if (resource === "subscription") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/behind/page/subscription`;
+      const { json } = await httpClient(url);
+      return {
+        data: {
+          ...json,
+          id: "subscription-page-id",
+        },
+      };
+    }
+
     if (resource === "news") {
       const url = `https://api.vision.softwaredoes.com/api/admin/news/${params.id}`;
       const { json } = await httpClient(url);
@@ -381,7 +400,8 @@ export const dataProvider: DataProvider = {
     }
     if (resource === "behind") {
       const url = `https://api.vision.softwaredoes.com/api/admin/behind/page`;
-      const { id, ...dataToStart } = params.data;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id: _id, ...dataToStart } = params.data;
 
       const { json } = await httpClient(url, {
         method: "PUT",
@@ -389,6 +409,15 @@ export const dataProvider: DataProvider = {
       });
 
       return { data: { ...json, id: "page" } };
+    }
+    if (resource === "subscription") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/behind/page/subscription`;
+      const { title, youtubeUrl, instagramUrl } = params.data;
+      const { json } = await httpClient(url, {
+        method: "PUT",
+        body: JSON.stringify({ title, youtubeUrl, instagramUrl }),
+      });
+      return { data: { ...json, id: "subscription-page-id" } };
     }
 
     if (resource === "news") {
