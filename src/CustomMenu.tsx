@@ -104,6 +104,11 @@ export const CustomMenu = () => (
         primaryText="Contact Us"
         leftIcon={<WebIcon />}
       />
+      <MenuItemLink
+        to="/how-it-work"
+        primaryText="How It Works"
+        leftIcon={<WebIcon />}
+      />
       <Menu.ResourceItem name="team" leftIcon={<WebIcon />} />
       <Menu.ResourceItem name="episodes" leftIcon={<WebIcon />} />
       <MenuItemLink

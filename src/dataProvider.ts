@@ -226,6 +226,14 @@ export const dataProvider: DataProvider = {
       return { data, total: data.length };
     }
 
+    if (resource === "how-it-work") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/how-it-work`;
+      const { json } = await httpClient(url);
+      const item = json ?? {};
+      const data = [{ ...item, id: "how-it-work-page-id" }];
+      return { data, total: data.length };
+    }
+
     if (resource === "news") {
       const { page, perPage } = params.pagination || { page: 1, perPage: 10 };
       const url = `https://api.vision.softwaredoes.com/api/admin/news?limit=${perPage}&page=${page}`;
@@ -348,6 +356,17 @@ export const dataProvider: DataProvider = {
       };
     }
 
+    if (resource === "how-it-work") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/how-it-work`;
+      const { json } = await httpClient(url);
+      return {
+        data: {
+          ...json,
+          id: "how-it-work-page-id",
+        },
+      };
+    }
+
     if (resource === "news") {
       const url = `https://api.vision.softwaredoes.com/api/admin/news/${params.id}`;
       const { json } = await httpClient(url);
@@ -447,6 +466,16 @@ export const dataProvider: DataProvider = {
         body: JSON.stringify({ title, description }),
       });
       return { data: { ...json, id: "contact-page-id" } };
+    }
+
+    if (resource === "how-it-work") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/how-it-work`;
+      const { preview, title, description } = params.data;
+      const { json } = await httpClient(url, {
+        method: "PUT",
+        body: JSON.stringify({ preview, title, description }),
+      });
+      return { data: { ...json, id: "how-it-work-page-id" } };
     }
 
     if (resource === "news") {
