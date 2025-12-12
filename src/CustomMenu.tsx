@@ -99,6 +99,11 @@ export const CustomMenu = () => (
     <MenuGroup label="Website Content">
       <Menu.ResourceItem name="testimonials" leftIcon={<WebIcon />} />
       <MenuItemLink to="/about" primaryText="About Us" leftIcon={<WebIcon />} />
+      <MenuItemLink
+        to="/contact"
+        primaryText="Contact Us"
+        leftIcon={<WebIcon />}
+      />
       <Menu.ResourceItem name="team" leftIcon={<WebIcon />} />
       <Menu.ResourceItem name="episodes" leftIcon={<WebIcon />} />
       <MenuItemLink

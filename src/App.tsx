@@ -39,6 +39,9 @@ import { TermsEdit } from "@/resources/termsAndConditions/edit.tsx";
 import { PrivacyRedirectList } from "@/resources/privacyPolicy/PrivacyRedirectList.tsx";
 import { PrivacyShow } from "@/resources/privacyPolicy/show.tsx";
 import { PrivacyEdit } from "@/resources/privacyPolicy/edit.tsx";
+import { ContactRedirectList } from "@/resources/contactUs/ContactRedirectList.tsx";
+import { ContactUsShow } from "@/resources/contactUs/show.tsx";
+import { ContactUsEdit } from "@/resources/contactUs/edit.tsx";
 
 export const App = () => (
   <Admin
@@ -96,6 +99,9 @@ export const App = () => (
       <Route path="/about" element={<AboutUsShow />} />
       <Route path="/about/edit" element={<AboutUsEdit />} />
 
+      <Route path="/contact" element={<ContactUsShow />} />
+      <Route path="/contact/edit" element={<ContactUsEdit />} />
+
       <Route path="/terms" element={<TermsShow />} />
       <Route path="/terms/edit" element={<TermsEdit />} />
 
@@ -109,6 +115,14 @@ export const App = () => (
       show={AboutUsShow}
       edit={AboutUsEdit}
       options={{ label: "About Us" }}
+    />
+
+    <Resource
+      name="contact"
+      list={ContactRedirectList}
+      show={ContactUsShow}
+      edit={ContactUsEdit}
+      options={{ label: "Contact Us" }}
     />
 
     <Resource
