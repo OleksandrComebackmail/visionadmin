@@ -234,6 +234,14 @@ export const dataProvider: DataProvider = {
       return { data, total: data.length };
     }
 
+    if (resource === "home-page") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/home/page`;
+      const { json } = await httpClient(url);
+      const item = json ?? {};
+      const data = [{ ...item, id: "home-page-id" }];
+      return { data, total: data.length };
+    }
+
     if (resource === "news") {
       const { page, perPage } = params.pagination || { page: 1, perPage: 10 };
       const url = `https://api.vision.softwaredoes.com/api/admin/news?limit=${perPage}&page=${page}`;
@@ -367,6 +375,17 @@ export const dataProvider: DataProvider = {
       };
     }
 
+    if (resource === "home-page") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/home/page`;
+      const { json } = await httpClient(url);
+      return {
+        data: {
+          ...json,
+          id: "home-page-id",
+        },
+      };
+    }
+
     if (resource === "news") {
       const url = `https://api.vision.softwaredoes.com/api/admin/news/${params.id}`;
       const { json } = await httpClient(url);
@@ -476,6 +495,16 @@ export const dataProvider: DataProvider = {
         body: JSON.stringify({ preview, title, description }),
       });
       return { data: { ...json, id: "how-it-work-page-id" } };
+    }
+
+    if (resource === "home-page") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/home/page`;
+      const { hero, map, shift } = params.data;
+      const { json } = await httpClient(url, {
+        method: "PUT",
+        body: JSON.stringify({ hero, map, shift }),
+      });
+      return { data: { ...json, id: "home-page-id" } };
     }
 
     if (resource === "news") {
