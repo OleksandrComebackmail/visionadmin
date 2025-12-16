@@ -10,7 +10,7 @@ import { useTheme } from "@mui/material/styles";
 
 const ContactUsShowActions = () => (
   <TopToolbar>
-    <EditButton />
+    <EditButton resource="contact" />
   </TopToolbar>
 );
 

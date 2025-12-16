@@ -98,6 +98,8 @@ export const EpisodeDialogTable = () => {
         <List
           resource="episodes"
           actions={false}
+          perPage={10}
+          storeKey="episodes-list"
           sx={{
             "& .RaList-main": { boxShadow: "none" },
             "& .RaList-content": { boxShadow: "none" },

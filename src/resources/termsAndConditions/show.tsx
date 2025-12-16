@@ -11,7 +11,7 @@ import { HtmlField } from "@/components/HtmlField"; // Переконайтес�
 
 const TermsShowActions = () => (
   <TopToolbar>
-    <EditButton />
+    <EditButton resource="terms" />
   </TopToolbar>
 );
 

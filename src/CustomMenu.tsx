@@ -100,6 +100,11 @@ export const CustomMenu = () => (
       <Menu.ResourceItem name="testimonials" leftIcon={<WebIcon />} />
       <MenuItemLink to="/about" primaryText="About Us" leftIcon={<WebIcon />} />
       <MenuItemLink
+        to="/coming-soon"
+        primaryText="Coming Soon"
+        leftIcon={<WebIcon />}
+      />
+      <MenuItemLink
         to="/contact"
         primaryText="Contact Us"
         leftIcon={<WebIcon />}

@@ -11,7 +11,7 @@ import { HtmlField } from "@/components/HtmlField";
 
 const PrivacyShowActions = () => (
   <TopToolbar>
-    <EditButton />
+    <EditButton resource="privacy" />
   </TopToolbar>
 );
 

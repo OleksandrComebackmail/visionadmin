@@ -45,6 +45,10 @@ import { ContactUsEdit } from "@/resources/contactUs/edit.tsx";
 import { HowItWorksRedirectList } from "@/resources/howItWorks/HowItWorksRedirectList.tsx";
 import { HowItWorksShow } from "@/resources/howItWorks/show.tsx";
 import { HowItWorksEdit } from "@/resources/howItWorks/edit.tsx";
+import { ComingSoonRedirectList } from "@/resources/comingSoon/ComingSoonRedirectList.tsx";
+import { ComingSoonShow } from "@/resources/comingSoon/show.tsx";
+import { ComingKidsEdit } from "@/resources/comingSoon/editKids.tsx";
+import { ComingBusinessEdit } from "@/resources/comingSoon/editBusiness.tsx";
 
 export const App = () => (
   <Admin
@@ -113,6 +117,10 @@ export const App = () => (
 
       <Route path="/privacy" element={<PrivacyShow />} />
       <Route path="/privacy/edit" element={<PrivacyEdit />} />
+
+      <Route path="/coming-soon" element={<ComingSoonShow />} />
+      <Route path="/coming-kids/edit" element={<ComingKidsEdit />} />
+      <Route path="/coming-business/edit" element={<ComingBusinessEdit />} />
     </CustomRoutes>
 
     <Resource
@@ -153,6 +161,13 @@ export const App = () => (
       show={PrivacyShow}
       edit={PrivacyEdit}
       options={{ label: "Privacy Policy" }}
+    />
+
+    <Resource
+      name="coming-soon"
+      list={ComingSoonRedirectList}
+      show={ComingSoonShow}
+      options={{ label: "Coming Soon" }}
     />
   </Admin>
 );

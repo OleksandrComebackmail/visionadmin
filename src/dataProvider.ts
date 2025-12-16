@@ -242,6 +242,22 @@ export const dataProvider: DataProvider = {
       return { data, total: data.length };
     }
 
+    if (resource === "coming-kids") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/coming/comingkids`;
+      const { json } = await httpClient(url);
+      const item = json ?? {};
+      const data = [{ ...item, id: "coming-kids-page-id" }];
+      return { data, total: data.length };
+    }
+
+    if (resource === "coming-business") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/coming/comingbusiness`;
+      const { json } = await httpClient(url);
+      const item = json ?? {};
+      const data = [{ ...item, id: "coming-business-page-id" }];
+      return { data, total: data.length };
+    }
+
     if (resource === "news") {
       const { page, perPage } = params.pagination || { page: 1, perPage: 10 };
       const url = `https://api.vision.softwaredoes.com/api/admin/news?limit=${perPage}&page=${page}`;
@@ -392,6 +408,29 @@ export const dataProvider: DataProvider = {
       const item = json.data || json;
       return { data: normalizeId(item) };
     }
+
+    if (resource === "coming-kids") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/coming/comingkids`;
+      const { json } = await httpClient(url);
+      return {
+        data: {
+          ...json,
+          id: "coming-kids-page-id",
+        },
+      };
+    }
+
+    if (resource === "coming-business") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/coming/comingbusiness`;
+      const { json } = await httpClient(url);
+      return {
+        data: {
+          ...json,
+          id: "coming-business-page-id",
+        },
+      };
+    }
+
     return base.getOne(resource, params);
   },
 
@@ -535,6 +574,27 @@ export const dataProvider: DataProvider = {
       });
       return { data: { ...json, id: "privacy-page-id" } };
     }
+
+    if (resource === "coming-kids") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/coming/comingkids`;
+      const { title, content, mediaUrl } = params.data;
+      const { json } = await httpClient(url, {
+        method: "PUT",
+        body: JSON.stringify({ title, content, mediaUrl }),
+      });
+      return { data: { ...json, id: "coming-kids-page-id" } };
+    }
+
+    if (resource === "coming-business") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/coming/comingbusiness`;
+      const { title, content, mediaUrl } = params.data;
+      const { json } = await httpClient(url, {
+        method: "PUT",
+        body: JSON.stringify({ title, content, mediaUrl }),
+      });
+      return { data: { ...json, id: "coming-business-page-id" } };
+    }
+
     return base.update(resource, params);
   },
 

@@ -12,7 +12,7 @@ import { HtmlField } from "@/components/HtmlField";
 
 const HowItWorksShowActions = () => (
   <TopToolbar>
-    <EditButton />
+    <EditButton resource="how-it-work" />
   </TopToolbar>
 );
 
