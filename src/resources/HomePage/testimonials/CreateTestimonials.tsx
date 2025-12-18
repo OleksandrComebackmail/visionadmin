@@ -10,7 +10,11 @@ import {
   Box,
   Typography,
   Rating,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
+import { StandaloneImageUpload } from "@/components/StandaloneImageUpload";
 
 interface TestimonialsFormData {
   name: string;
@@ -18,6 +22,7 @@ interface TestimonialsFormData {
   description: string;
   rate: number;
   videoUrl: string;
+  imageUrl?: string;
   order: number | string;
 }
 
@@ -27,6 +32,7 @@ const initialData: TestimonialsFormData = {
   description: "",
   rate: 5,
   videoUrl: "",
+  imageUrl: "",
   order: 1,
 };
 
@@ -38,6 +44,9 @@ export const CreateTestimonials = ({
   onClose: () => void;
 }) => {
   const [formData, setFormData] = useState<TestimonialsFormData>(initialData);
+  const [mediaType, setMediaType] = useState<"none" | "image" | "video">(
+    "none",
+  );
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const refresh = useRefresh();
@@ -64,6 +73,9 @@ export const CreateTestimonials = ({
       const payload = {
         ...formData,
         order: Number(formData.order),
+        // ensure both fields exist in payload
+        imageUrl: formData.imageUrl || "",
+        videoUrl: mediaType === "video" ? formData.videoUrl || "" : "",
       };
 
       await dataProvider.create("testimonials", { data: payload });
@@ -79,6 +91,7 @@ export const CreateTestimonials = ({
 
   const handleClose = () => {
     setFormData(initialData);
+    setMediaType("none");
     onClose();
   };
 
@@ -143,14 +156,55 @@ export const CreateTestimonials = ({
             required
           />
 
-          <TextField
-            label="Video URL"
-            name="videoUrl"
-            value={formData.videoUrl}
-            onChange={handleChange}
-            fullWidth
-            placeholder="https://cdn.example.com/videos/..."
-          />
+          <Box>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+              Media
+            </Typography>
+            <RadioGroup
+              row
+              value={mediaType}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>, value: string) =>
+                setMediaType(value as "none" | "image" | "video")
+              }
+            >
+              <FormControlLabel
+                value="none"
+                control={<Radio />}
+                label="None"
+              />
+              <FormControlLabel
+                value="image"
+                control={<Radio />}
+                label="Image"
+              />
+              <FormControlLabel
+                value="video"
+                control={<Radio />}
+                label="Video"
+              />
+            </RadioGroup>
+
+            {mediaType === "image" && (
+              <StandaloneImageUpload
+                label="Upload image"
+                value={formData.imageUrl || ""}
+                onChange={(url) =>
+                  setFormData((p) => ({ ...p, imageUrl: url }))
+                }
+              />
+            )}
+
+            {mediaType === "video" && (
+              <TextField
+                label="Video URL"
+                name="videoUrl"
+                value={formData.videoUrl}
+                onChange={handleChange}
+                fullWidth
+                placeholder="https://cdn.example.com/videos/..."
+              />
+            )}
+          </Box>
         </Box>
       </DialogContent>
       <DialogActions>

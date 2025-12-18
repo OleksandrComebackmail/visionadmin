@@ -10,14 +10,19 @@ import {
   Box,
   Typography,
   Rating,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
+import { StandaloneImageUpload } from "@/components/StandaloneImageUpload";
 
 interface TestimonialRecord extends RaRecord {
   name: string;
   position: string;
   description: string;
   rate: number;
-  videoUrl: string;
+  videoUrl?: string;
+  imageUrl?: string;
   order: number;
 }
 
@@ -26,7 +31,8 @@ interface TestimonialsFormData {
   position: string;
   description: string;
   rate: number;
-  videoUrl: string;
+  videoUrl?: string;
+  imageUrl?: string;
   order: number | string;
 }
 
@@ -45,8 +51,12 @@ export const EditTestimonials = ({
     description: "",
     rate: 0,
     videoUrl: "",
+    imageUrl: "",
     order: 0,
   });
+  const [mediaType, setMediaType] = useState<"none" | "image" | "video">(
+    "none",
+  );
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const refresh = useRefresh();
@@ -59,8 +69,13 @@ export const EditTestimonials = ({
         description: record.description || "",
         rate: record.rate || 0,
         videoUrl: record.videoUrl || "",
+        imageUrl: record.imageUrl || "",
         order: record.order || 0,
       });
+
+      if (record.imageUrl) setMediaType("image");
+      else if (record.videoUrl) setMediaType("video");
+      else setMediaType("none");
     }
   }, [record, open]);
 
@@ -90,7 +105,8 @@ export const EditTestimonials = ({
         position: formData.position,
         description: formData.description,
         rate: formData.rate,
-        videoUrl: formData.videoUrl,
+        videoUrl: mediaType === "video" ? formData.videoUrl || "" : "",
+        imageUrl: mediaType === "image" ? formData.imageUrl || "" : "",
         order: Number(formData.order),
       };
 
@@ -103,7 +119,7 @@ export const EditTestimonials = ({
       notify("Testimonial updated successfully", { type: "success" });
       onClose();
       refresh();
-    } catch (error) {
+    } catch {
       notify("Error updating testimonial", { type: "error" });
     }
   };
@@ -171,14 +187,44 @@ export const EditTestimonials = ({
             required
           />
 
-          <TextField
-            label="Video URL"
-            name="videoUrl"
-            value={formData.videoUrl}
-            onChange={handleChange}
-            fullWidth
-            placeholder="https://cdn.example.com/videos/..."
-          />
+          <Box>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+              Media
+            </Typography>
+            <RadioGroup
+              row
+              value={mediaType}
+              onChange={(
+                _: React.ChangeEvent<HTMLInputElement>,
+                value: string,
+              ) => setMediaType(value as "none" | "image" | "video")}
+            >
+              <FormControlLabel value="none" control={<Radio />} label="None" />
+              <FormControlLabel value="image" control={<Radio />} label="Image" />
+              <FormControlLabel value="video" control={<Radio />} label="Video" />
+            </RadioGroup>
+
+            {mediaType === "image" && (
+              <StandaloneImageUpload
+                label="Upload image"
+                value={formData.imageUrl || ""}
+                onChange={(url) =>
+                  setFormData((p) => ({ ...p, imageUrl: url }))
+                }
+              />
+            )}
+
+            {mediaType === "video" && (
+              <TextField
+                label="Video URL"
+                name="videoUrl"
+                value={formData.videoUrl}
+                onChange={handleChange}
+                fullWidth
+                placeholder="https://cdn.example.com/videos/..."
+              />
+            )}
+          </Box>
         </Box>
       </DialogContent>
       <DialogActions>
