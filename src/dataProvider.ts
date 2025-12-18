@@ -242,6 +242,13 @@ export const dataProvider: DataProvider = {
       return { data, total: data.length };
     }
 
+    if (resource === "faq") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/faq`;
+      const { json } = await httpClient(url);
+      const item = json ?? {};
+      return { data: [{ ...item, id: "faq-page-id" }], total: 1 };
+    }
+
     if (resource === "coming-kids") {
       const url = `https://api.vision.softwaredoes.com/api/admin/coming/comingkids`;
       const { json } = await httpClient(url);
@@ -402,6 +409,17 @@ export const dataProvider: DataProvider = {
       };
     }
 
+    if (resource === "faq") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/faq`;
+      const { json } = await httpClient(url);
+      return {
+        data: {
+          ...json,
+          id: "faq-page-id",
+        },
+      };
+    }
+
     if (resource === "news") {
       const url = `https://api.vision.softwaredoes.com/api/admin/news/${params.id}`;
       const { json } = await httpClient(url);
@@ -496,7 +514,6 @@ export const dataProvider: DataProvider = {
     }
     if (resource === "behind") {
       const url = `https://api.vision.softwaredoes.com/api/admin/behind/page`;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { id: _id, ...dataToStart } = params.data;
 
       const { json } = await httpClient(url, {
@@ -546,33 +563,15 @@ export const dataProvider: DataProvider = {
       return { data: { ...json, id: "home-page-id" } };
     }
 
-    if (resource === "news") {
-      const url = `https://api.vision.softwaredoes.com/api/admin/news/${params.id}`;
+    if (resource === "faq") {
+      const url = `https://api.vision.softwaredoes.com/api/admin/faq`;
+      // payload expected: { title, subtitle, items }
+      const { title, subtitle, items } = params.data as any;
       const { json } = await httpClient(url, {
         method: "PUT",
-        body: JSON.stringify(params.data),
+        body: JSON.stringify({ title, subtitle, items }),
       });
-      return { data: normalizeId(json) };
-    }
-    if (resource === "terms") {
-      const url = `https://api.vision.softwaredoes.com/api/admin/termsandpolicy/terms`;
-      const { title, content } = params.data;
-
-      const { json } = await httpClient(url, {
-        method: "PUT",
-        body: JSON.stringify({ title, content }),
-      });
-      return { data: { ...json, id: "terms-page-id" } };
-    }
-    if (resource === "privacy") {
-      const url = `https://api.vision.softwaredoes.com/api/admin/termsandpolicy/policy`;
-      const { title, content } = params.data;
-
-      const { json } = await httpClient(url, {
-        method: "PUT",
-        body: JSON.stringify({ title, content }),
-      });
-      return { data: { ...json, id: "privacy-page-id" } };
+      return { data: { ...json, id: "faq-page-id" } };
     }
 
     if (resource === "coming-kids") {

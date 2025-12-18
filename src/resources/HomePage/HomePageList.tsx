@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import { TestimonialsListTable } from "@/resources/HomePage/testimonials/TestimonialsTable.tsx";
 import { HomePageContent } from "@/resources/HomePage/HomePageContent.tsx";
+import FAQTable from "@/resources/HomePage/faq/FAQTable";
 export const HomePageList = () => {
   return (
     <Box
@@ -18,9 +19,9 @@ export const HomePageList = () => {
           paddingBottom: 4,
         }}
       >
-
-        <HomePageContent/>
+        <HomePageContent />
         <TestimonialsListTable />
+        <FAQTable />
       </Box>
     </Box>
   );
